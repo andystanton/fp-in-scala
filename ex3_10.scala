@@ -1,10 +1,8 @@
 object Ex3_10 {
   @annotation.tailrec
-  def foldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = {
-    as.length match {
+  def foldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = as.length match {
       case 0 => z
       case _ => foldLeft(as.tail, f(as.head, z))(f)
-    }
   }
 
   def main(args: Array[String]) {
