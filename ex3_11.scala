@@ -1,8 +1,8 @@
 object Ex3_11 {
   @annotation.tailrec
-  def foldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = as.length match {
-    case 0 => z
-    case _ => foldLeft(as.tail, f(as.head, z))(f)
+  def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = as match {
+    case Nil => z
+    case h :: t => foldLeft(t, f(z, h))(f)
   }
 
   def sum[A](as: List[A])(implicit num: Numeric[A]): A =
@@ -11,7 +11,7 @@ object Ex3_11 {
   def product[A](as: List[A])(implicit num: Numeric[A]): A = 
     foldLeft(as, num.one)(num.times(_, _))
 
-  def length[A](as: List[A]): Int = foldLeft(as, 0)((_, b) => b + 1)
+  def length[A](as: List[A]): Int = foldLeft(as, 0)((b, _) => b + 1)
 
   def main(args: Array[String]) {
     val intslist = List(

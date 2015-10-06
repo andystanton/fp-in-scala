@@ -1,12 +1,12 @@
 object Ex3_12 {
   @annotation.tailrec
-  def foldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = as.length match {
-    case 0 => z
-    case _ => foldLeft(as.tail, f(as.head, z))(f)
+  def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = as match {
+    case Nil => z
+    case h :: t => foldLeft(t, f(z, h))(f)
   }
 
   def reverse[A](as: List[A]): List[A] = {
-    foldLeft(as, Nil: List[A])((a, b) => a :: b)
+    foldLeft(as, Nil: List[A])((b, a) => a :: b)
   }
 
   def main(args: Array[String]) {

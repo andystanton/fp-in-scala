@@ -1,11 +1,12 @@
 object Ex3_14 {
   def append[A](as: List[A], a: A): List[A] = {
-    as.foldLeft(List(a))((x: List[A], y: A) => {
-      x ++ List(y)
-    })
+    as.foldLeft(List[A](a))((a, b) => a match {
+        case h :: t => h :: b :: t
+        case _ => Nil
+      }).foldLeft(List[A]())((a, b) => (b :: a))
   }
 
   def main(args: Array[String]) {
-    println(append(List(1, 2, 3), 4))
+    println(append(List(1, 2, 3, 4), 5))
   }
 }
