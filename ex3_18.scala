@@ -9,7 +9,7 @@ object Ex3_18 {
     }
     
     @annotation.tailrec
-    def reverse[C](xs: List[C], out: List[C]): List[C] = {
+    def reverse(xs: List[B], out: List[B]): List[B] = {
       xs match {
         case Nil => out
         case h :: t => reverse(t, h :: out)
