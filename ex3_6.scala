@@ -6,6 +6,7 @@ object Ex3_6 {
       case _ => build
     }
     
+    @annotation.tailrec
     def reverse(l: List[A], build: List[A]): List[A] = l match {
       case h :: t => reverse(t, h :: build)
       case _ => build
