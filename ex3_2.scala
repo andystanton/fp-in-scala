@@ -1,4 +1,4 @@
-object Ex3_3 {
+object Ex3_2 {
   def tail[A](xs: List[A]): List[A] = xs match {
     case _ :: t => t
     case _ => Nil
@@ -10,7 +10,7 @@ object Ex3_3 {
       List(1,2),
       List(1,2,3)
     )
-    
+
     foos.foreach(foo => assert(tail(foo) == foo.tail))
 
     println("Ok!")
