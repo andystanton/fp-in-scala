@@ -5,10 +5,8 @@ object Ex3_21 {
     println("Ok!")
   }
   
-  def flatmapFilter[A](xs: List[A])(p: A => Boolean): List[A] = {
-    def listfilterer(x: A) = if (p(x)) List(x) else Nil
-    flatmap(xs)(listfilterer)
-  }
+  def flatmapFilter[A](xs: List[A])(p: A => Boolean): List[A] = 
+    flatmap(xs)(x => if (p(x)) List(x) else Nil)
   
   def reverse[A](xs: List[A]): List[A] = {
     @annotation.tailrec
@@ -16,7 +14,6 @@ object Ex3_21 {
       case h :: t => loop(t, h :: out)
       case _ => out
     }
-    
     loop(xs, Nil)
   }
   
@@ -32,8 +29,8 @@ object Ex3_21 {
   def flatmap[A, B](xs: List[A])(f: A => List[B]): List[B] = {  
     @annotation.tailrec
     def loop(xs: List[A], out: List[B]): List[B] = xs match {
-      case Nil => out
       case h :: t => loop(t, concatenate(f(h), out))
+      case Nil => out
     }
     loop(reverse(xs), Nil)
   }
