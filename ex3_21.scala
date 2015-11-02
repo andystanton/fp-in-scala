@@ -29,17 +29,6 @@ object Ex3_21 {
     loop(reverse(xs), ys)
   }
   
-  def filter[A](xs: List[A])(predicate: A => Boolean): List[A] = {
-    @annotation.tailrec
-    def loop(xs: List[A], out: List[A])(predicate: A => Boolean): List[A] = xs match {
-      case h :: t if predicate(h) => loop(t, h :: out)(predicate)
-      case h :: t => loop(t, out)(predicate)
-      case _ => out
-    }
-
-    reverse(loop(xs, Nil)(predicate))
-  }
-  
   def flatmap[A, B](xs: List[A])(f: A => List[B]): List[B] = {  
     @annotation.tailrec
     def loop(xs: List[A], out: List[B]): List[B] = xs match {
