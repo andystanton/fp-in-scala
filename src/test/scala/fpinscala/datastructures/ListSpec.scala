@@ -12,6 +12,17 @@ class ListSpec extends FlatSpec with Matchers {
     List.product(List(1.0, 2.0, 3.0)) shouldBe 6.0
   }
 
+  it should "append two lists together" in {
+    List.append(List(1, 2, 3), List(4, 5, 6)) shouldBe List(1, 2, 3, 4, 5, 6)
+    List.append(Nil, List(1, 2, 3)) shouldBe List(1, 2, 3)
+    List.append(List(1, 2, 3), Nil) shouldBe List(1, 2, 3)
+  }
+
+  it should "foldRight over a list" in {
+    List.foldRight(List(1, 2, 3, 4), 0)(_ + _) shouldBe 10
+    List.foldRight(List(1, 2, 3, 4), 1)(_ * _) shouldBe 24
+  }
+
   // exercise 3.2
   it should "return the tail of a list" in {
     List.tail(List(1, 2, 3, 4, 5)) shouldBe List(2, 3, 4, 5)
@@ -44,17 +55,27 @@ class ListSpec extends FlatSpec with Matchers {
 
   // exercise 3.5
   it should "drop the first elements that satisfy a predicate" in {
-    List.drop(List(1, 2, 3, 4, 5, 6), 3) shouldBe List(4, 5, 6)
-    List.drop(List(1), 1) shouldBe Nil
+    List.dropWhile(List(1, 2, 3, 4, 5, 6), (x: Int) => x < 4) shouldBe List(4, 5, 6)
+    List.dropWhile(List(1), (x: Int) => x < 3) shouldBe Nil
 
     intercept[IllegalArgumentException] {
-      List.drop(Nil, 2)
+      List.dropWhile(Nil, (x: Int) => x < 5)
+    }.getMessage shouldBe "Cannot drop elements from nil"
+
+    List.dropWhile2(List(1, 2, 3, 4, 5, 6))(x => x < 4) shouldBe List(4, 5, 6)
+    List.dropWhile2(List(1))(x => x < 3) shouldBe Nil
+
+    intercept[IllegalArgumentException] {
+      List.dropWhile2(Nil: List[Int])(x => x < 5)
     }.getMessage shouldBe "Cannot drop elements from nil"
   }
 
   // exercise 3.6
   it should "return all but the last element of a list" in {
     List.init(List(1, 2, 3, 4, 5)) shouldBe List(1, 2, 3, 4)
+    intercept[IllegalArgumentException] {
+      List.init(List(1))
+    }.getMessage shouldBe "Cannot return init of list containing single item"
     intercept[IllegalArgumentException] {
       List.init(Nil)
     }.getMessage shouldBe "Cannot return init of nil"
