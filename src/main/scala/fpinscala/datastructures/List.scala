@@ -5,16 +5,27 @@ case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List {
-  def sum(ints: List[Int]): Int = ints match {
-    case Nil => 0
-    case Cons(x, xs) => x + sum(xs)
+  def length[A](xs: List[A]): Int = xs match {
+    case Cons(_, t) => length(t) + 1
+    case _ => 0
   }
 
-  def product(doubles: List[Double]): Double = doubles match {
+  def length2[A](xs: List[A]): Int = foldRight(xs, 0)((_, b) => b + 1)
+
+  def sum(ns: List[Int]): Int = ns match {
+    case Nil => 0
+    case Cons(n, ns) => n + sum(ns)
+  }
+
+  def sum2(ns: List[Int]): Int = foldRight(ns, 0)(_ + _)
+
+  def product(ns: List[Double]): Double = ns match {
     case Nil => 1.0
     case Cons(0.0, _) => 0.0
-    case Cons(x, xs) => x * product(xs)
+    case Cons(n, ns) => n * product(ns)
   }
+
+  def product2(ns: List[Double]): Double = foldRight(ns, 1.0)(_ * _)
 
   def append[A](a1: List[A], a2: List[A]): List[A] = a1 match {
     case Nil => a2
@@ -74,4 +85,16 @@ object List {
       case _ => loop(xs)
     }
   }
+
+  // exercise 3.10
+  @annotation.tailrec
+  def foldLeft[A, B](xs: List[A], z: B)(f: (A, B) => B): B = xs match {
+    case Nil => z
+    case Cons(h, t) => foldLeft(t, f(h, z))(f)
+  }
+
+  // exercise 3.11
+  def sum3(ns: List[Int]): Int = foldLeft(ns, 0)(_ + _)
+  def product3(ns: List[Double]): Double = foldLeft(ns, 1.0)(_ * _)
+  def length3[A](xs: List[A]): Int = foldLeft(xs, 0)((_, b) => b + 1)
 }
