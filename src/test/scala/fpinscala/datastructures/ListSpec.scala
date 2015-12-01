@@ -131,4 +131,29 @@ class ListSpec extends FlatSpec with Matchers {
   it should "calculate the length of a list using foldLeft" in {
     List.length3(List(1, 2, 3, 4)) shouldBe 4
   }
+
+  // exercise 3.12
+  it should "calculate the reverse of a list using foldLeft" in {
+    List.reverse(List(1, 2, 3, 4, 5)) shouldBe List(5, 4, 3, 2, 1)
+    List.reverse(Nil) shouldBe Nil
+    List.reverse(List(1)) shouldBe List(1)
+  }
+
+  it should "express foldLeft in terms of foldRight" in {
+    List.foldLeftViaFoldRight(List(1, 2, 3, 4), 0)(_ + _) shouldBe
+      List.foldLeft(List(1, 2, 3, 4), 0)(_ + _)
+    List.foldLeftViaFoldRight(List(1, 2, 3, 4), 0)(_ * _) shouldBe
+      List.foldLeft(List(1, 2, 3, 4), 0)(_ * _)
+    List.foldLeftViaFoldRight(List("a", "b", "c", "d"), "")(_ + _) shouldBe
+      List.foldLeft(List("a", "b", "c", "d"), "")(_ + _)
+  }
+
+  it should "express foldRight in terms of foldLeft" in {
+    List.foldRightViaFoldLeft(List(1, 2, 3, 4), 0)(_ + _) shouldBe
+      List.foldRight(List(1, 2, 3, 4), 0)(_ + _)
+    List.foldRightViaFoldLeft(List(1, 2, 3, 4), 0)(_ * _) shouldBe
+      List.foldRight(List(1, 2, 3, 4), 0)(_ * _)
+    List.foldRightViaFoldLeft(List("a", "b", "c", "d"), "")(_ + _) shouldBe
+      List.foldRight(List("a", "b", "c", "d"), "")(_ + _)
+  }
 }
