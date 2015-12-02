@@ -131,4 +131,29 @@ object List {
   // exercise 3.18
   def map[A, B](xs: List[A])(f: A => B): List[B] =
     foldLeft(reverse(xs), Nil: List[B])((z, a) => Cons(f(a), z))
+
+  // exercise 3.19
+  def filter[A](xs: List[A])(f: A => Boolean): List[A] =
+    foldLeft(reverse(xs), Nil: List[A])((z, a) => if (!f(a)) Cons(a, z) else z)
+
+  // exercise 3.20
+  def flatMap[A, B](xs: List[A])(f: A => List[B]): List[B] =
+    foldLeft(reverse(xs), Nil: List[B])((z, a) => append3(f(a), z))
+
+  // exercise 3.21
+  def filter2[A](xs: List[A])(f: A => Boolean): List[A] =
+    flatMap(xs)(a => if (!f(a)) List(a) else Nil: List[A])
+
+  // exercise 3.22
+  def add(as: List[Int], bs: List[Int]): List[Int] = {
+    @annotation.tailrec
+    def loop(as: List[Int], bs: List[Int], z: List[Int]): List[Int] = as match {
+      case Cons(ha, ta) => bs match {
+        case Cons(hb, tb) => loop(ta, tb, Cons(ha + hb, z))
+        case _ => z
+      }
+      case _ => z
+    }
+    loop(reverse(as), reverse(bs), Nil: List[Int])
+  }
 }

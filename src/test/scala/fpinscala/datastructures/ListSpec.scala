@@ -194,4 +194,24 @@ class ListSpec extends FlatSpec with Matchers {
     List.map(List(1.1, 2.2, 3.3, 4.4))(_.toString) shouldBe
       List("1.1", "2.2", "3.3", "4.4")
   }
+
+  // exercise 3.19
+  it should "filter a list of elements that satisfy a given predicate" in {
+    List.filter(List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))(_ % 2 == 1) shouldBe List(2, 4, 6, 8, 10)
+  }
+
+  // exercise 3.20
+  it should "convert a list from one type into a list of another type" in {
+    List.flatMap(List(1, 2, 3, 4))(i => List(i, i)) shouldBe List(1, 1, 2, 2, 3, 3, 4, 4)
+  }
+
+  // exercise 3.21
+  it should "filter a list of elements that satisfy a given predicate in terms of flatMap" in {
+    List.filter2(List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))(_ % 2 == 1) shouldBe List(2, 4, 6, 8, 10)
+  }
+
+  // exercise 3.22
+  it should "add two lists of ints together" in {
+    List.add(List(1, 2, 3), List(4, 5, 6)) shouldBe List(5, 7, 9)
+  }
 }
