@@ -156,4 +156,22 @@ object List {
     }
     loop(reverse(as), reverse(bs), Nil: List[Int])
   }
+
+  // exercise 3.23
+  def zipWith[A, B, C](as: List[A], bs: List[B])(f: (A, B) => C) = {
+    @annotation.tailrec
+    def loop(as: List[A], bs: List[B], z: List[C]): List[C] = as match {
+      case Cons(ha, ta) => bs match {
+        case Cons(hb, tb) => loop(ta, tb, Cons(f(ha, hb), z))
+        case _ => z
+      }
+      case _ => z
+    }
+    loop(reverse(as), reverse(bs), Nil: List[C])
+  }
+
+  // exercise 3.24
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean =
+    foldLeft(reverse(sup), false)((z, a) =>
+      foldLeft(reverse(sub), z)((y, b) => false))
 }

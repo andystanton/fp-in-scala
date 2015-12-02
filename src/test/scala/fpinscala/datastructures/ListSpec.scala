@@ -214,4 +214,26 @@ class ListSpec extends FlatSpec with Matchers {
   it should "add two lists of ints together" in {
     List.add(List(1, 2, 3), List(4, 5, 6)) shouldBe List(5, 7, 9)
   }
+
+  // exercise 3.23
+  it should "zip two lists together" in {
+    List.zipWith(List(1, 2, 3), List(4, 5, 6))(_ + _) shouldBe List(5, 7, 9)
+    List.zipWith(List(1, 2, 3), List(4, 5, 6))((_, _)) shouldBe List((1, 4), (2, 5), (3, 6))
+  }
+
+  // exercise 3.24
+  it should "find subsequences of a list" in {
+    List.hasSubsequence(List(1, 2, 3, 4), List(1)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(1, 2)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(1, 2, 3)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(1, 2, 3, 4)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(2)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(2, 3)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(2, 3, 4)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(3)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(3, 4)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(4)) shouldBe true
+    List.hasSubsequence(List(1, 2, 3, 4), List(2, 1)) shouldBe false
+    List.hasSubsequence(List(1, 2, 3, 4), List(2, 3, 4, 5)) shouldBe false
+  }
 }
