@@ -116,7 +116,7 @@ class ListSpec extends FlatSpec with Matchers {
   it should "foldLeft over a list" in {
     List.foldLeft(List(1, 2, 3, 4), 0)(_ + _) shouldBe 10
     List.foldLeft(List(1, 2, 3, 4), 1)(_ * _) shouldBe 24
-    List.foldLeft(List(1, 2, 3, 4), 0)((_, b) => b + 1) shouldBe 4
+    List.foldLeft(List(1, 2, 3, 4), 0)((b, _) => b + 1) shouldBe 4
   }
 
   // exercise 3.11

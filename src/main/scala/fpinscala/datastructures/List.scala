@@ -88,24 +88,24 @@ object List {
 
   // exercise 3.10
   @annotation.tailrec
-  def foldLeft[A, B](xs: List[A], z: B)(f: (A, B) => B): B = xs match {
+  def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B = xs match {
     case Nil => z
-    case Cons(h, t) => foldLeft(t, f(h, z))(f)
+    case Cons(h, t) => foldLeft(t, f(z, h))(f)
   }
 
   // exercise 3.11
   def sum3(ns: List[Int]): Int = foldLeft(ns, 0)(_ + _)
   def product3(ns: List[Double]): Double = foldLeft(ns, 1.0)(_ * _)
-  def length3[A](xs: List[A]): Int = foldLeft(xs, 0)((_, b) => b + 1)
+  def length3[A](xs: List[A]): Int = foldLeft(xs, 0)((b, _) => b + 1)
 
   // exerise 3.12
   def reverse[A](xs: List[A]): List[A] =
-    foldLeft(xs, Nil: List[A])((a, b) => Cons(a, b))
+    foldLeft(xs, Nil: List[A])((a, b) => Cons(b, a))
 
   // exercise 3.13
-  def foldLeftViaFoldRight[A, B](xs: List[A], z: B)(f: (A, B) => B): B =
-    foldRight(reverse(xs), z)(f)
+  def foldLeftViaFoldRight[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+    foldRight(reverse(xs), z)((a, b) => f(b, a))
 
   def foldRightViaFoldLeft[A, B](xs: List[A], z: B)(f: (A, B) => B): B =
-    foldLeft(reverse(xs), z)(f)
+    foldLeft(reverse(xs), z)((b, a) => f(a, b))
 }
