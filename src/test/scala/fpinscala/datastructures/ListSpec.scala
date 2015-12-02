@@ -139,21 +139,59 @@ class ListSpec extends FlatSpec with Matchers {
     List.reverse(List(1)) shouldBe List(1)
   }
 
+  // exercise 3.13
   it should "express foldLeft in terms of foldRight" in {
-    List.foldLeftViaFoldRight(List(1, 2, 3, 4), 0)(_ + _) shouldBe
+    List.foldLeft2(List(1, 2, 3, 4), 0)(_ + _) shouldBe
       List.foldLeft(List(1, 2, 3, 4), 0)(_ + _)
-    List.foldLeftViaFoldRight(List(1, 2, 3, 4), 0)(_ * _) shouldBe
+    List.foldLeft2(List(1, 2, 3, 4), 0)(_ * _) shouldBe
       List.foldLeft(List(1, 2, 3, 4), 0)(_ * _)
-    List.foldLeftViaFoldRight(List("a", "b", "c", "d"), "")(_ + _) shouldBe
+    List.foldLeft2(List("a", "b", "c", "d"), "")(_ + _) shouldBe
       List.foldLeft(List("a", "b", "c", "d"), "")(_ + _)
   }
 
   it should "express foldRight in terms of foldLeft" in {
-    List.foldRightViaFoldLeft(List(1, 2, 3, 4), 0)(_ + _) shouldBe
+    List.foldRight2(List(1, 2, 3, 4), 0)(_ + _) shouldBe
       List.foldRight(List(1, 2, 3, 4), 0)(_ + _)
-    List.foldRightViaFoldLeft(List(1, 2, 3, 4), 0)(_ * _) shouldBe
+    List.foldRight2(List(1, 2, 3, 4), 0)(_ * _) shouldBe
       List.foldRight(List(1, 2, 3, 4), 0)(_ * _)
-    List.foldRightViaFoldLeft(List("a", "b", "c", "d"), "")(_ + _) shouldBe
+    List.foldRight2(List("a", "b", "c", "d"), "")(_ + _) shouldBe
       List.foldRight(List("a", "b", "c", "d"), "")(_ + _)
+  }
+
+  // exercise 3.14
+  it should "append two lists together via foldRight" in {
+    List.append2(List(1, 2, 3), List(4, 5, 6)) shouldBe List(1, 2, 3, 4, 5, 6)
+    List.append2(List(1, 2, 3), Nil) shouldBe List(1, 2, 3)
+    List.append2(Nil, List(1, 2, 3)) shouldBe List(1, 2, 3)
+  }
+
+  it should "append two lists together via foldLeft" in {
+    List.append3(List(1, 2, 3), List(4, 5, 6)) shouldBe List(1, 2, 3, 4, 5, 6)
+    List.append3(List(1, 2, 3), Nil) shouldBe List(1, 2, 3)
+    List.append3(Nil, List(1, 2, 3)) shouldBe List(1, 2, 3)
+  }
+
+  // exercise 3.15
+  it should "concatenate several lists together" in {
+    List.concatenate(List(List(1, 2, 3), List(4, 5, 6), List(7, 8, 9))) shouldBe
+      List(1, 2, 3, 4, 5, 6, 7, 8, 9)
+  }
+
+  // exercise 3.16
+  it should "add one to a list of integers" in {
+    List.addOne(List(1, 2, 3, 4)) shouldBe List(2, 3, 4, 5)
+  }
+
+  // exercise 3.17
+  it should "turn a list of doubles into a list of strings" in {
+    List.doubleToString(List(1.1, 2.2, 3.3, 4.4)) shouldBe
+      List("1.1", "2.2", "3.3", "4.4")
+  }
+
+  // exercise 3.18
+  it should "convert a list from one type into another" in {
+    List.map(List(1, 2, 3, 4))(_ + 1) shouldBe List(2, 3, 4, 5)
+    List.map(List(1.1, 2.2, 3.3, 4.4))(_.toString) shouldBe
+      List("1.1", "2.2", "3.3", "4.4")
   }
 }

@@ -103,9 +103,32 @@ object List {
     foldLeft(xs, Nil: List[A])((a, b) => Cons(b, a))
 
   // exercise 3.13
-  def foldLeftViaFoldRight[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+  def foldLeft2[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
     foldRight(reverse(xs), z)((a, b) => f(b, a))
 
-  def foldRightViaFoldLeft[A, B](xs: List[A], z: B)(f: (A, B) => B): B =
+  def foldRight2[A, B](xs: List[A], z: B)(f: (A, B) => B): B =
     foldLeft(reverse(xs), z)((b, a) => f(a, b))
+
+  // exercise 3.14
+  def append2[A](as: List[A], bs: List[A]): List[A] =
+    foldRight(as, bs)((a, z) => Cons(a, z))
+
+  def append3[A](as: List[A], bs: List[A]): List[A] =
+    foldLeft(reverse(as), bs)((z, a) => Cons(a, z))
+
+  // exercise 3.15
+  def concatenate[A](ls: List[List[A]]): List[A] =
+    foldLeft(ls, Nil: List[A])((z, a) => append3(z, a))
+
+  // exercise 3.16
+  def addOne(ns: List[Int]): List[Int] =
+    foldLeft(reverse(ns), Nil: List[Int])((z, a) => Cons(a + 1, z))
+
+  // exercise 3.17
+  def doubleToString(ns: List[Double]): List[String] =
+    foldLeft(reverse(ns), Nil: List[String])((z, a) => Cons(a.toString, z))
+
+  // exercise 3.18
+  def map[A, B](xs: List[A])(f: A => B): List[B] =
+    foldLeft(reverse(xs), Nil: List[B])((z, a) => Cons(f(a), z))
 }
