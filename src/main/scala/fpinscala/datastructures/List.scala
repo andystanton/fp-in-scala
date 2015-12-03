@@ -171,7 +171,25 @@ object List {
   }
 
   // exercise 3.24
-  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean =
-    foldLeft(reverse(sup), false)((z, a) =>
-      foldLeft(reverse(sub), z)((y, b) => false))
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+    @annotation.tailrec
+    def inner(sup: List[A], sub: List[A], z: Boolean): Boolean = sup match {
+      case Cons(ha, ta) => sub match {
+        case Cons(hb, tb) => inner(ta, tb, z && ha == hb)
+        case _ => z
+      }
+      case _ => sub match {
+        case Cons(_, _) => false
+        case _ => z
+      }
+    }
+
+    @annotation.tailrec
+    def outer(sup: List[A], z: Boolean): Boolean = sup match {
+      case Cons(h, t) => outer(t, z || inner(sup, sub, true))
+      case _ => z
+    }
+
+    if (length(sub) > length(sup)) false else outer(sup, false)
+  }
 }
