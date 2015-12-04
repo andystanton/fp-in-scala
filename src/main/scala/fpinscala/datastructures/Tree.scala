@@ -33,13 +33,13 @@ object Tree {
   }
 
   // exercise 3.29
-  def fold[A, B, C](tree: Tree[A], z: B)(f: (A, B) => C)(g: (Tree[A], B) => B)(h: (C, C) => C): C = tree match {
+  def fold[A, B](tree: Tree[A], z: B)(f: (A, B) => B)(g: (Tree[A], B) => B)(h: (B, B) => B): B = tree match {
     case Branch(left, right) => h(fold(left, g(left, z))(f)(g)(h), fold(right, g(right, z))(f)(g)(h))
     case Leaf(value) => f(value, z)
   }
 
   def size2[A](tree: Tree[A]) = fold(tree, 0)((_, _) => 1)((_, _) => 1)(_ + _ + 1)
-  def maximum2(tree: Tree[Int]) = fold(tree, -1)((n, _) => n)((_, z) => z)(_.max(_))
   def depth2[A](tree: Tree[A]) = fold(tree, 0)((_, z) => z + 1)((_, z) => z + 1)(_.max(_))
-  def map2[A, B](tree: Tree[A])(f: A => B) = fold(tree, null: Tree[B])((a, b) => Leaf(f(a)): Tree[B])((t, b) => b)(Branch(_, _))
+  def maximum2(tree: Tree[Int]) = fold(tree, Int.MinValue)((n, _) => n)((_, z) => z)(_.max(_))
+  def map2[A, B](tree: Tree[A])(f: A => B) = fold(tree, null: Tree[B])((a, b) => Leaf(f(a)))((t, b) => b)(Branch(_, _))
 }
