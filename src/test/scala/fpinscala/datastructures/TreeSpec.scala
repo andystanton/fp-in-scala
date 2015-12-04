@@ -31,6 +31,7 @@ class TreeSpec extends FlatSpec with Matchers {
     Tree.map(Branch(Leaf(1), Leaf(2)))(_.toString) shouldBe Branch(Leaf("1"), Leaf("2"))
   }
 
+  // exercise 3.29
   it should "calculate the number of nodes in a tree using fold" in {
     Tree.size2(Leaf()) shouldBe 1
     Tree.size2(Branch(Leaf(), Leaf())) shouldBe 3
@@ -49,9 +50,9 @@ class TreeSpec extends FlatSpec with Matchers {
     Tree.depth2(Branch(Branch(Leaf(), Leaf()), Branch(Branch(Leaf(), Leaf()), Leaf()))) shouldBe 4
   }
 
-  // it should "convert a tree from one type to another using fold" in {
-  //   Tree.map2(Branch(Leaf(1), Leaf(2)))(_ * 3) shouldBe Branch(Leaf(3), Leaf(6))
-  //   Tree.map2(Branch(Leaf(1), Leaf(2)))(_ + 3) shouldBe Branch(Leaf(4), Leaf(5))
-  //   Tree.map2(Branch(Leaf(1), Leaf(2)))(_.toString) shouldBe Branch(Leaf("1"), Leaf("2"))
-  // }
+  it should "convert a tree from one type to another using fold" in {
+    Tree.map2(Branch(Leaf(1), Leaf(2)))(_ * 3) shouldBe Branch(Leaf(3), Leaf(6))
+    Tree.map2(Branch(Leaf(1), Leaf(2)))(_ + 3) shouldBe Branch(Leaf(4), Leaf(5))
+    Tree.map2(Branch(Leaf(1), Leaf(2)))(_.toString) shouldBe Branch(Leaf("1"), Leaf("2"))
+  }
 }
