@@ -18,12 +18,9 @@ object Tree {
   }
 
   // exercise 3.27
-  def depth[A](tree: Tree[A]): Int = {
-    def loop(tree: Tree[A], carry: Int): Int = tree match {
-      case Branch(left, right) => loop(left, carry + 1).max(loop(right, carry + 1))
-      case Leaf(_) => carry + 1
-    }
-    loop(tree, 0)
+  def depth[A](tree: Tree[A]): Int = tree match {
+    case Branch(left, right) => 1 + depth(left).max(depth(right))
+    case Leaf(_) => 1
   }
 
   // exercise 3.28
@@ -33,13 +30,13 @@ object Tree {
   }
 
   // exercise 3.29
-  def fold[A, B](tree: Tree[A], z: B)(f: (A, B) => B)(g: (Tree[A], B) => B)(h: (B, B) => B): B = tree match {
-    case Branch(left, right) => h(fold(left, g(left, z))(f)(g)(h), fold(right, g(right, z))(f)(g)(h))
-    case Leaf(value) => f(value, z)
+  def fold[A, B](tree: Tree[A])(f: A => B)(g: (B, B) => B): B = tree match {
+    case Branch(left, right) => g(fold(left)(f)(g), fold(right)(f)(g))
+    case Leaf(value) => f(value)
   }
 
-  def size2[A](tree: Tree[A]) = fold(tree, 0)((_, _) => 1)((_, _) => 1)(_ + _ + 1)
-  def depth2[A](tree: Tree[A]) = fold(tree, 0)((_, z) => z + 1)((_, z) => z + 1)(_.max(_))
-  def maximum2(tree: Tree[Int]) = fold(tree, Int.MinValue)((n, _) => n)((_, z) => z)(_.max(_))
-  def map2[A, B](tree: Tree[A])(f: A => B) = fold(tree, null: Tree[B])((a, _) => Leaf(f(a)))((_, b) => b)(Branch(_, _))
+  def size2[A](tree: Tree[A]) = fold(tree)(_ => 1)(_ + _ + 1)
+  def depth2[A](tree: Tree[A]) = fold(tree)(_ => 1)(_.max(_) + 1)
+  def maximum2(tree: Tree[Int]) = fold(tree)(identity)(_.max(_))
+  def map2[A, B](tree: Tree[A])(f: A => B) = fold(tree)(a => Leaf(f(a)): Tree[B])(Branch(_, _))
 }
