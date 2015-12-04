@@ -41,5 +41,5 @@ object Tree {
   def size2[A](tree: Tree[A]) = fold(tree, 0)((_, _) => 1)((_, _) => 1)(_ + _ + 1)
   def depth2[A](tree: Tree[A]) = fold(tree, 0)((_, z) => z + 1)((_, z) => z + 1)(_.max(_))
   def maximum2(tree: Tree[Int]) = fold(tree, Int.MinValue)((n, _) => n)((_, z) => z)(_.max(_))
-  def map2[A, B](tree: Tree[A])(f: A => B) = fold(tree, null: Tree[B])((a, b) => Leaf(f(a)))((t, b) => b)(Branch(_, _))
+  def map2[A, B](tree: Tree[A])(f: A => B) = fold(tree, null: Tree[B])((a, _) => Leaf(f(a)))((_, b) => b)(Branch(_, _))
 }
