@@ -4,6 +4,7 @@ case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
 
 sealed trait Option[+A] {
+  // exercise 4.1
   def map[B](f: A => B): Option[B] = this match {
     case Some(get) => Some(f(get))
     case _ => None
@@ -21,4 +22,12 @@ sealed trait Option[+A] {
 
   def filter(f: A => Boolean): Option[A] =
     flatMap(a => if (f(a)) Some(a) else None)
+
+}
+
+object Option {
+    def lift[A, B](f: A => B): Option[A] => Option[B] = _.map(f)
+
+    // exercise 4.3
+    def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = ???
 }

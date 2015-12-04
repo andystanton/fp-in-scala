@@ -3,6 +3,7 @@ package fpinscala.errorhandling
 import org.scalatest._
 
 class OptionSpec extends FlatSpec with Matchers {
+  // exercise 4.1
   "An Option" should "map its value from one type to another" in {
     Some(3).map(_.toString) shouldBe Some("3")
     None.map(_.toString) shouldBe None
@@ -27,5 +28,15 @@ class OptionSpec extends FlatSpec with Matchers {
     Some(3).filter(_ > 2) shouldBe Some(3)
     Some(3).filter(_ < 2) shouldBe None
     (None: Option[Int]).filter(_ < 2) shouldBe None
+  }
+
+  "An Option companion object" should "lift a function" in {
+    Option.lift((a: Int) => a * 2)(Some(3)) shouldBe Some(6)
+    Option.lift((a: Int) => a * 2)(None) shouldBe None
+  }
+
+  it should "combine two options using a binary function" in {
+    Option.map2(Some(3), Some(4))(_ * _) shouldBe Some(12)
+    Option.map2(Some(3), None)(_ * _) shouldBe None
   }
 }
