@@ -35,8 +35,10 @@ class OptionSpec extends FlatSpec with Matchers {
     Option.lift((a: Int) => a * 2)(None) shouldBe None
   }
 
+  // exercise 4.3
   it should "combine two options using a binary function" in {
     Option.map2(Some(3), Some(4))(_ * _) shouldBe Some(12)
-    Option.map2(Some(3), None)(_ * _) shouldBe None
+    Option.map2(Some(3), None: Option[Int])(_ * _) shouldBe None
+    Option.map2(Some(12.0), Some(3))((a: Double, b: Int) => (a/b).toString)
   }
 }
