@@ -1,5 +1,7 @@
 package fpinscala.errorhandling
 
+import fpinscala.datastructures
+
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
 
@@ -31,4 +33,13 @@ object Option {
     // exercise 4.3
     def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
       a.flatMap(ia => b.map(ib => f(ia, ib)))
+
+    // exercise 4.4
+    // def sequence[A](xs: List[Option[A]]):Option[List[A]] =
+    //   Some(xs.flatMap(_.map(x => x)))
+    def sequence[A](xs: List[Option[A]]):Option[List[A]] =
+      Some(xs.flatMap {
+        case Some(value) => List(value)
+        case _ => Nil
+      })
 }

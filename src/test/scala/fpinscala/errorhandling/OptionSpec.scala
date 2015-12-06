@@ -1,5 +1,6 @@
 package fpinscala.errorhandling
 
+import fpinscala.datastructures
 import org.scalatest._
 
 class OptionSpec extends FlatSpec with Matchers {
@@ -40,5 +41,10 @@ class OptionSpec extends FlatSpec with Matchers {
     Option.map2(Some(3), Some(4))(_ * _) shouldBe Some(12)
     Option.map2(Some(3), None: Option[Int])(_ * _) shouldBe None
     Option.map2(Some(12.0), Some(3))((a: Double, b: Int) => (a/b).toString)
+  }
+
+  // exercise 4.4
+  it should "sequence a list of options into a single option of a list of the some values" in {
+    Option.sequence(List(Some(3), Some(4), None, Some(5), None)) shouldBe Some(List(3,4,5))
   }
 }
