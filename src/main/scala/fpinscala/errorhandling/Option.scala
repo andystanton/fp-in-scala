@@ -42,4 +42,16 @@ object Option {
 
   def sequenceViaMap2[A](xs: List[Option[A]]): Option[List[A]] =
     List.foldLeft(List.reverse(xs), Some(Nil): Option[List[A]])((z, a) => map2(a, z)(Cons(_, _)))
+
+  // exercise 4.5
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
+    sequence(List.map(a)(f))
+
+  def traverseViaRecursion[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a match {
+    case Cons(h, t) => f(h).flatMap(x => (traverseViaRecursion(t)(f)).map(y => Cons(x, y)))
+    case Nil => Some(Nil)
+  }
+
+  def sequenceViaTraverse[A](xs: List[Option[A]]): Option[List[A]] =
+    traverseViaRecursion(xs)(identity)
 }

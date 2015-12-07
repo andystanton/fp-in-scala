@@ -40,17 +40,31 @@ class OptionSpec extends FlatSpec with Matchers {
   it should "combine two options using a binary function" in {
     Option.map2(Some(3), Some(4))(_ * _) shouldBe Some(12)
     Option.map2(Some(3), None: Option[Int])(_ * _) shouldBe None
-    Option.map2(Some(12.0), Some(3))((a: Double, b: Int) => (a/b).toString)
+    Option.map2(Some(12.0), Some(3))((a: Double, b: Int) => (a / b).toString)
   }
 
   // exercise 4.4
   it should "sequence a list of options into a single option of a list of the some values" in {
-    Option.sequence(List(Some(3), Some(4), Some(5))) shouldBe Some(List(3,4,5))
+    Option.sequence(List(Some(3), Some(4), Some(5))) shouldBe Some(List(3, 4, 5))
     Option.sequence(List(Some(3), Some(4), None, Some(5), None)) shouldBe None
   }
 
   it should "sequence a list of options into a single option of a list of the some values via map2" in {
-    Option.sequenceViaMap2(List(Some(3), Some(4), Some(5))) shouldBe Some(List(3,4,5))
+    Option.sequenceViaMap2(List(Some(3), Some(4), Some(5))) shouldBe Some(List(3, 4, 5))
     Option.sequenceViaMap2(List(Some(3), Some(4), None, Some(5), None)) shouldBe None
+  }
+
+  // exercise 4.5
+  it should "traverse a list of one type calling a partial function" in {
+    Option.traverse(List(1, 2, 3))(x => Some(x.toString)) shouldBe Some(List("1", "2", "3"))
+  }
+
+  it should "traverse a list of one type calling a partial function recursively" in {
+    Option.traverseViaRecursion(List(1, 2, 3))(x => Some(x.toString)) shouldBe Some(List("1", "2", "3"))
+  }
+
+  it should "sequence a list of options into a single option of a list of the some values via traverse" in {
+    Option.sequenceViaTraverse(List(Some(3), Some(4), Some(5))) shouldBe Some(List(3, 4, 5))
+    Option.sequenceViaTraverse(List(Some(3), Some(4), None, Some(5), None)) shouldBe None
   }
 }
