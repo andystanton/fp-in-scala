@@ -45,6 +45,8 @@ class OptionSpec extends FlatSpec with Matchers {
 
   // exercise 4.4
   it should "sequence a list of options into a single option of a list of the some values" in {
-    Option.sequence(List(Some(3), Some(4), None, Some(5), None)) shouldBe Some(List(3,4,5))
+    Option.sequence(List(Some(3), Some(4), Some(5))) shouldBe Some(List(3,4,5))
+    Option.sequence(List(Some(3), Some(4), None, Some(5), None)) shouldBe None
+    // Option.sequence(Nil) shouldBe None
   }
 }

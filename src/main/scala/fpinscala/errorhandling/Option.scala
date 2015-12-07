@@ -28,18 +28,15 @@ sealed trait Option[+A] {
 }
 
 object Option {
-    def lift[A, B](f: A => B): Option[A] => Option[B] = _.map(f)
+  def lift[A, B](f: A => B): Option[A] => Option[B] = _.map(f)
 
-    // exercise 4.3
-    def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
-      a.flatMap(ia => b.map(ib => f(ia, ib)))
+  // exercise 4.3
+  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+    a.flatMap(ia => b.map(ib => f(ia, ib)))
 
-    // exercise 4.4
-    // def sequence[A](xs: List[Option[A]]):Option[List[A]] =
-    //   Some(xs.flatMap(_.map(x => x)))
-    def sequence[A](xs: List[Option[A]]):Option[List[A]] =
-      Some(xs.flatMap {
-        case Some(value) => List(value)
-        case _ => Nil
-      })
+  // exercise 4.4
+  def sequence[A](xs: List[Option[A]]): Option[List[A]] = (xs match {
+    case h :: t => h.flatMap(x => sequence(t).map(y => x :: y))
+    case Nil => Some(Nil)
+  })
 }
