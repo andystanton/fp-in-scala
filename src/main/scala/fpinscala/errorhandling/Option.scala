@@ -1,6 +1,6 @@
 package fpinscala.errorhandling
 
-import fpinscala.datastructures
+import fpinscala.datastructures._
 
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
@@ -35,8 +35,11 @@ object Option {
     a.flatMap(ia => b.map(ib => f(ia, ib)))
 
   // exercise 4.4
-  def sequence[A](xs: List[Option[A]]): Option[List[A]] = (xs match {
-    case h :: t => h.flatMap(x => sequence(t).map(y => x :: y))
+  def sequence[A](xs: List[Option[A]]): Option[List[A]] = xs match {
+    case Cons(h, t) => h.flatMap(x => sequence(t).map(y => Cons(x, y)))
     case Nil => Some(Nil)
-  })
+  }
+
+  def sequenceViaMap2[A](xs: List[Option[A]]): Option[List[A]] =
+    List.foldLeft(List.reverse(xs), Some(Nil): Option[List[A]])((z, a) => map2(a, z)(Cons(_, _)))
 }

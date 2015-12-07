@@ -10,14 +10,14 @@ object List {
     case _ => 0
   }
 
-  def length2[A](xs: List[A]): Int = foldRight(xs, 0)((_, b) => b + 1)
+  def lengthViaFoldRight[A](xs: List[A]): Int = foldRight(xs, 0)((_, b) => b + 1)
 
   def sum(ns: List[Int]): Int = ns match {
     case Nil => 0
     case Cons(n, ns) => n + sum(ns)
   }
 
-  def sum2(ns: List[Int]): Int = foldRight(ns, 0)(_ + _)
+  def sumViaFoldRight(ns: List[Int]): Int = foldRight(ns, 0)(_ + _)
 
   def product(ns: List[Double]): Double = ns match {
     case Nil => 1.0
@@ -25,7 +25,7 @@ object List {
     case Cons(n, ns) => n * product(ns)
   }
 
-  def product2(ns: List[Double]): Double = foldRight(ns, 1.0)(_ * _)
+  def productViaFoldRight(ns: List[Double]): Double = foldRight(ns, 1.0)(_ * _)
 
   def append[A](a1: List[A], a2: List[A]): List[A] = a1 match {
     case Nil => a2
@@ -67,12 +67,6 @@ object List {
     case _ => xs
   }
 
-  def dropWhile2[A](xs: List[A])(p: A => Boolean): List[A] = xs match {
-    case Nil => throw new IllegalArgumentException("Cannot drop elements from nil")
-    case Cons(h, t) if p(h) => if (t == Nil) Nil else dropWhile(t, p)
-    case _ => xs
-  }
-
   // exercise 3.6
   def init[A](xs: List[A]): List[A] = {
     def loop(xs: List[A]): List[A] = xs match {
@@ -94,31 +88,31 @@ object List {
   }
 
   // exercise 3.11
-  def sum3(ns: List[Int]): Int = foldLeft(ns, 0)(_ + _)
-  def product3(ns: List[Double]): Double = foldLeft(ns, 1.0)(_ * _)
-  def length3[A](xs: List[A]): Int = foldLeft(xs, 0)((b, _) => b + 1)
+  def sumViaFoldLeft(ns: List[Int]): Int = foldLeft(ns, 0)(_ + _)
+  def productViaFoldLeft(ns: List[Double]): Double = foldLeft(ns, 1.0)(_ * _)
+  def lengthViaFoldLeft[A](xs: List[A]): Int = foldLeft(xs, 0)((b, _) => b + 1)
 
   // exerise 3.12
   def reverse[A](xs: List[A]): List[A] =
     foldLeft(xs, Nil: List[A])((a, b) => Cons(b, a))
 
   // exercise 3.13
-  def foldLeft2[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+  def foldLeftViaFoldRight[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
     foldRight(reverse(xs), z)((a, b) => f(b, a))
 
-  def foldRight2[A, B](xs: List[A], z: B)(f: (A, B) => B): B =
+  def foldRightViaFoldLeft[A, B](xs: List[A], z: B)(f: (A, B) => B): B =
     foldLeft(reverse(xs), z)((b, a) => f(a, b))
 
   // exercise 3.14
-  def append2[A](as: List[A], bs: List[A]): List[A] =
+  def appendViaFoldRight[A](as: List[A], bs: List[A]): List[A] =
     foldRight(as, bs)((a, z) => Cons(a, z))
 
-  def append3[A](as: List[A], bs: List[A]): List[A] =
+  def appendViaFoldLeft[A](as: List[A], bs: List[A]): List[A] =
     foldLeft(reverse(as), bs)((z, a) => Cons(a, z))
 
   // exercise 3.15
   def concatenate[A](ls: List[List[A]]): List[A] =
-    foldLeft(ls, Nil: List[A])((z, a) => append3(z, a))
+    foldLeft(ls, Nil: List[A])((z, a) => appendViaFoldLeft(z, a))
 
   // exercise 3.16
   def addOne(ns: List[Int]): List[Int] =
@@ -138,10 +132,10 @@ object List {
 
   // exercise 3.20
   def flatMap[A, B](xs: List[A])(f: A => List[B]): List[B] =
-    foldLeft(reverse(xs), Nil: List[B])((z, a) => append3(f(a), z))
+    foldLeft(reverse(xs), Nil: List[B])((z, a) => appendViaFoldLeft(f(a), z))
 
   // exercise 3.21
-  def filter2[A](xs: List[A])(f: A => Boolean): List[A] =
+  def filterViaFlatMap[A](xs: List[A])(f: A => Boolean): List[A] =
     flatMap(xs)(a => if (!f(a)) List(a) else Nil: List[A])
 
   // exercise 3.22

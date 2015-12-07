@@ -33,26 +33,26 @@ class TreeSpec extends FlatSpec with Matchers {
 
   // exercise 3.29
   it should "calculate the number of nodes in a tree using fold" in {
-    Tree.size2(Leaf()) shouldBe 1
-    Tree.size2(Branch(Leaf(), Leaf())) shouldBe 3
-    Tree.size2(Branch(Branch(Leaf(), Leaf()), Branch(Leaf(), Leaf()))) shouldBe 7
+    Tree.sizeViaFold(Leaf()) shouldBe 1
+    Tree.sizeViaFold(Branch(Leaf(), Leaf())) shouldBe 3
+    Tree.sizeViaFold(Branch(Branch(Leaf(), Leaf()), Branch(Leaf(), Leaf()))) shouldBe 7
   }
 
   it should "find the maximum element in a tree of integers using fold" in {
-    Tree.maximum2(Leaf(3)) shouldBe 3
-    Tree.maximum2(Branch(Leaf(2), Leaf(3))) shouldBe 3
-    Tree.maximum2(Branch(Branch(Leaf(-2), Leaf(8)), Leaf(12))) shouldBe 12
+    Tree.maximum(Leaf(3)) shouldBe 3
+    Tree.maximum(Branch(Leaf(2), Leaf(3))) shouldBe 3
+    Tree.maximum(Branch(Branch(Leaf(-2), Leaf(8)), Leaf(12))) shouldBe 12
   }
 
   it should "find the depth of a tree using fold" in {
-    Tree.depth2(Leaf()) shouldBe 1
-    Tree.depth2(Branch(Leaf(), Leaf())) shouldBe 2
-    Tree.depth2(Branch(Branch(Leaf(), Leaf()), Branch(Branch(Leaf(), Leaf()), Leaf()))) shouldBe 4
+    Tree.depth(Leaf()) shouldBe 1
+    Tree.depth(Branch(Leaf(), Leaf())) shouldBe 2
+    Tree.depth(Branch(Branch(Leaf(), Leaf()), Branch(Branch(Leaf(), Leaf()), Leaf()))) shouldBe 4
   }
 
   it should "convert a tree from one type to another using fold" in {
-    Tree.map2(Branch(Leaf(1), Leaf(2)))(_ * 3) shouldBe Branch(Leaf(3), Leaf(6))
-    Tree.map2(Branch(Leaf(1), Leaf(2)))(_ + 3) shouldBe Branch(Leaf(4), Leaf(5))
-    Tree.map2(Branch(Leaf(1), Leaf(2)))(_.toString) shouldBe Branch(Leaf("1"), Leaf("2"))
+    Tree.map(Branch(Leaf(1), Leaf(2)))(_ * 3) shouldBe Branch(Leaf(3), Leaf(6))
+    Tree.map(Branch(Leaf(1), Leaf(2)))(_ + 3) shouldBe Branch(Leaf(4), Leaf(5))
+    Tree.map(Branch(Leaf(1), Leaf(2)))(_.toString) shouldBe Branch(Leaf("1"), Leaf("2"))
   }
 }

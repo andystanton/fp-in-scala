@@ -19,7 +19,7 @@ class ListSpec extends FlatSpec with Matchers {
   }
 
   it should "calculate the sum of a list of int values using foldRight" in {
-    List.sum2(List(1, 2, 3, 4)) shouldBe 10
+    List.sumViaFoldRight(List(1, 2, 3, 4)) shouldBe 10
   }
 
   it should "calculate the product of a list of double values" in {
@@ -27,7 +27,7 @@ class ListSpec extends FlatSpec with Matchers {
   }
 
   it should "calculate the product of a list of double values using foldRight" in {
-    List.product2(List(1.0, 2.0, 3.0, 4.0)) shouldBe 24.0
+    List.productViaFoldRight(List(1.0, 2.0, 3.0, 4.0)) shouldBe 24.0
   }
 
   it should "append two lists together" in {
@@ -80,13 +80,6 @@ class ListSpec extends FlatSpec with Matchers {
     intercept[IllegalArgumentException] {
       List.dropWhile(Nil, (x: Int) => x < 5)
     }.getMessage shouldBe "Cannot drop elements from nil"
-
-    List.dropWhile2(List(1, 2, 3, 4, 5, 6))(x => x < 4) shouldBe List(4, 5, 6)
-    List.dropWhile2(List(1))(x => x < 3) shouldBe Nil
-
-    intercept[IllegalArgumentException] {
-      List.dropWhile2(Nil: List[Int])(x => x < 5)
-    }.getMessage shouldBe "Cannot drop elements from nil"
   }
 
   // exercise 3.6
@@ -107,9 +100,9 @@ class ListSpec extends FlatSpec with Matchers {
 
   // exercise 3.8
   it should "calculate the length of a list using foldRight" in {
-    List.length2(List(1, 2, 3, 4)) shouldBe 4
-    List.length2(List(1)) shouldBe 1
-    List.length2(Nil) shouldBe 0
+    List.lengthViaFoldRight(List(1, 2, 3, 4)) shouldBe 4
+    List.lengthViaFoldRight(List(1)) shouldBe 1
+    List.lengthViaFoldRight(Nil) shouldBe 0
   }
 
   // exercise 3.10
@@ -121,15 +114,15 @@ class ListSpec extends FlatSpec with Matchers {
 
   // exercise 3.11
   it should "calculate the sum of a list of ints using foldLeft" in {
-    List.sum3(List(1, 2, 3, 4)) shouldBe 10
+    List.sumViaFoldLeft(List(1, 2, 3, 4)) shouldBe 10
   }
 
   it should "calculate the product of a list of doubles using foldLeft" in {
-    List.product3(List(1, 2, 3, 4)) shouldBe 24
+    List.productViaFoldLeft(List(1, 2, 3, 4)) shouldBe 24
   }
 
   it should "calculate the length of a list using foldLeft" in {
-    List.length3(List(1, 2, 3, 4)) shouldBe 4
+    List.lengthViaFoldLeft(List(1, 2, 3, 4)) shouldBe 4
   }
 
   // exercise 3.12
@@ -141,34 +134,34 @@ class ListSpec extends FlatSpec with Matchers {
 
   // exercise 3.13
   it should "express foldLeft in terms of foldRight" in {
-    List.foldLeft2(List(1, 2, 3, 4), 0)(_ + _) shouldBe
+    List.foldLeftViaFoldRight(List(1, 2, 3, 4), 0)(_ + _) shouldBe
       List.foldLeft(List(1, 2, 3, 4), 0)(_ + _)
-    List.foldLeft2(List(1, 2, 3, 4), 0)(_ * _) shouldBe
+    List.foldLeftViaFoldRight(List(1, 2, 3, 4), 0)(_ * _) shouldBe
       List.foldLeft(List(1, 2, 3, 4), 0)(_ * _)
-    List.foldLeft2(List("a", "b", "c", "d"), "")(_ + _) shouldBe
+    List.foldLeftViaFoldRight(List("a", "b", "c", "d"), "")(_ + _) shouldBe
       List.foldLeft(List("a", "b", "c", "d"), "")(_ + _)
   }
 
   it should "express foldRight in terms of foldLeft" in {
-    List.foldRight2(List(1, 2, 3, 4), 0)(_ + _) shouldBe
+    List.foldRightViaFoldLeft(List(1, 2, 3, 4), 0)(_ + _) shouldBe
       List.foldRight(List(1, 2, 3, 4), 0)(_ + _)
-    List.foldRight2(List(1, 2, 3, 4), 0)(_ * _) shouldBe
+    List.foldRightViaFoldLeft(List(1, 2, 3, 4), 0)(_ * _) shouldBe
       List.foldRight(List(1, 2, 3, 4), 0)(_ * _)
-    List.foldRight2(List("a", "b", "c", "d"), "")(_ + _) shouldBe
+    List.foldRightViaFoldLeft(List("a", "b", "c", "d"), "")(_ + _) shouldBe
       List.foldRight(List("a", "b", "c", "d"), "")(_ + _)
   }
 
   // exercise 3.14
   it should "append two lists together via foldRight" in {
-    List.append2(List(1, 2, 3), List(4, 5, 6)) shouldBe List(1, 2, 3, 4, 5, 6)
-    List.append2(List(1, 2, 3), Nil) shouldBe List(1, 2, 3)
-    List.append2(Nil, List(1, 2, 3)) shouldBe List(1, 2, 3)
+    List.appendViaFoldRight(List(1, 2, 3), List(4, 5, 6)) shouldBe List(1, 2, 3, 4, 5, 6)
+    List.appendViaFoldRight(List(1, 2, 3), Nil) shouldBe List(1, 2, 3)
+    List.appendViaFoldRight(Nil, List(1, 2, 3)) shouldBe List(1, 2, 3)
   }
 
   it should "append two lists together via foldLeft" in {
-    List.append3(List(1, 2, 3), List(4, 5, 6)) shouldBe List(1, 2, 3, 4, 5, 6)
-    List.append3(List(1, 2, 3), Nil) shouldBe List(1, 2, 3)
-    List.append3(Nil, List(1, 2, 3)) shouldBe List(1, 2, 3)
+    List.appendViaFoldLeft(List(1, 2, 3), List(4, 5, 6)) shouldBe List(1, 2, 3, 4, 5, 6)
+    List.appendViaFoldLeft(List(1, 2, 3), Nil) shouldBe List(1, 2, 3)
+    List.appendViaFoldLeft(Nil, List(1, 2, 3)) shouldBe List(1, 2, 3)
   }
 
   // exercise 3.15
@@ -207,7 +200,7 @@ class ListSpec extends FlatSpec with Matchers {
 
   // exercise 3.21
   it should "filter a list of elements that satisfy a given predicate in terms of flatMap" in {
-    List.filter2(List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))(_ % 2 == 1) shouldBe List(2, 4, 6, 8, 10)
+    List.filterViaFlatMap(List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))(_ % 2 == 1) shouldBe List(2, 4, 6, 8, 10)
   }
 
   // exercise 3.22
