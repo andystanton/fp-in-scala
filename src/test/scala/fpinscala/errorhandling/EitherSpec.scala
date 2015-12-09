@@ -27,10 +27,30 @@ class EitherSpec extends FlatSpec with Matchers {
   it should "map apply a function to itself and another Either" in {
     val first: Either[String, Int] = Right(4)
     val second: Either[String, Int] = Right(3)
-    first.map2(second)(_*_) shouldBe Right(12)
+    first.map2(second)(_ * _) shouldBe Right(12)
 
     val third: Either[String, Int] = Left("no")
     val fourth: Either[String, Int] = Right(3)
-    third.map2(fourth)(_*_) shouldBe Left("no")
+    third.map2(fourth)(_ * _) shouldBe Left("no")
+  }
+
+  // exercise 4.7
+  it should "sequence a List of Eithers into an Either of a List" in {
+    val first: Either[String, Int] = Right(4)
+    val second: Either[String, Int] = Right(3)
+    val third: Either[String, Int] = Left("no")
+    val fourth: Either[String, Int] = Right(2)
+    val fifth: Either[String, Int] = Left("not at all")
+
+    Either.sequence(List(first, second, fourth)) shouldBe Right(List(4, 3, 2))
+    Either.sequence(List(first, second, third, fourth, fifth)) shouldBe Left("no")
+  }
+
+  it should "traverse a List of Eithers calling a function on each and returning an Either of a list" in {
+    Either.traverse(List(4, 3, 2, 1))(x => Right(x.toString)) shouldBe Right(List("4", "3", "2", "1"))
+    Either.traverse(List(4, 3, 2, 1))({
+      case 3 => Left("no")
+      case x => Right(x.toString)
+    }) shouldBe Left("no")
   }
 }

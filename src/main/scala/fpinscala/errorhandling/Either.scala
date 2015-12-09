@@ -25,3 +25,16 @@ sealed trait Either[+E, +A] {
   def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] =
     flatMap(ia => b.map(ib => f(ia, ib)))
 }
+
+object Either {
+  // exercise 4.7
+  def sequence[E, A](es: List[Either[E, A]]): Either[E, List[A]] = es match {
+    case Cons(h, t) => h.flatMap(x => sequence(t).map(xs => Cons(x, xs)))
+    case _ => Right(Nil)
+  }
+
+  def traverse[E, A, B](as: List[A])(f: A => Either[E, B]): Either[E, List[B]] = as match {
+    case Cons(h, t) => f(h).flatMap(x => traverse(t)(f).map(xs => Cons(x, xs)))
+    case _ => Right(Nil)
+  }
+}
