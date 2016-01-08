@@ -42,4 +42,9 @@ class StreamSpec extends FlatSpec with Matchers {
   it should "drop the first n elements" in {
     Stream(1, 2, 3, 4, 5).drop(3) === Stream(4, 5) shouldBe true
   }
+
+  // exercise 5.3
+  it should "take the first n elements matching a predicate" in {
+    Stream(1, 2, 3, 4, 5).takeWhile(_ < 4) === Stream(1, 2, 3) shouldBe true
+  }
 }
