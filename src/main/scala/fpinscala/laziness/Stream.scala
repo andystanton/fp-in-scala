@@ -71,6 +71,11 @@ sealed trait Stream[+A] {
     }
     loop(f, Empty, this).reverse
   }
+
+  def foldRight[B](z: B)(f: (A, B) => B): B = this match {
+    case Cons(h, t) => t().foldRight(f(h(), z))(f)
+    case _ => z
+  }
 }
 
 case object Empty extends Stream[Nothing]

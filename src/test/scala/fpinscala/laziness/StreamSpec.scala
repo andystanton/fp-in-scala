@@ -47,4 +47,8 @@ class StreamSpec extends FlatSpec with Matchers {
   it should "take the first n elements matching a predicate" in {
     Stream(1, 2, 3, 4, 5).takeWhile(_ < 4) === Stream(1, 2, 3) shouldBe true
   }
+
+  it should "fold right over a stream" in {
+    Stream(1,2,3,4,5).foldRight(0)(_+_) shouldBe 15
+  }
 }
