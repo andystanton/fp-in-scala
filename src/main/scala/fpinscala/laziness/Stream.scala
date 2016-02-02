@@ -64,7 +64,7 @@ sealed trait Stream[+A] {
   }
 
   // exercise 5.3
-  def takeWhile(f: A => Boolean) = {
+  def takeWhile(f: A => Boolean): Stream[A] = {
     def loop(f: A => Boolean, out: Stream[A], as: Stream[A]): Stream[A] = as match {
       case Cons(h, t) if f(h()) => loop(f, Cons(h, () => out), t())
       case _ => out
@@ -72,19 +72,35 @@ sealed trait Stream[+A] {
     loop(f, Empty, this).reverse
   }
 
-  def foldRight[B](z: B)(f: (A, B) => B): B = this match {
-    case Cons(h, t) => t().foldRight(f(h(), z))(f)
+  @annotation.tailrec
+  final def foldLeft[B](z: B)(f: (A, => B) => B): B = this match {
+    case Cons(h, t) => t().foldLeft(f(h(), z))(f)
+    case _ => z
+  }
+
+  final def foldRight[B](z: B)(f: (A, => B) => B): B = this match {
+    case Cons(h, t) => f(h(), t().foldRight(z)(f))
     case _ => z
   }
 
   // exercise 5.4
-  def forAllViaFoldRight(f: A => Boolean): Boolean = foldRight(true)((a, b) => b && f(a))
+  def forAllViaFoldRight(f: A => Boolean): Boolean =
+    foldRight(true)((a, b) => f(a) && b)
 
   def forAll(f: A => Boolean): Boolean = this match {
     case Cons(h, t) if f(h()) => t().forAll(f)
     case Cons(h, t) => false
     case _ => true
   }
+
+  // exercise 5.5
+  def takeWhileViaFoldRight(f: A => Boolean): Stream[A] =
+    foldRight(Empty: Stream[A])((a, b) =>
+      if (f(a)) Stream.cons(a, b) else b)
+
+  // exercise 5.6
+  def headOptionViaFoldRight(): Option[A] =
+    foldRight(None: Option[A])((a, b) => Some(a).orElse(b))
 }
 
 case object Empty extends Stream[Nothing]

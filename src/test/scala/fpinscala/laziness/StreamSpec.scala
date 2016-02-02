@@ -52,6 +52,10 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(1, 2, 3, 4, 5).foldRight(0)(_ + _) shouldBe 15
   }
 
+  it should "fold left over a stream" in {
+    Stream(1, 2, 3, 4, 5).foldLeft(0)(_ + _) shouldBe 15
+  }
+
   // exercise 5.4
   it should "assert a predicate over its elements via foldRight" in {
     Stream(1, 2, 3, 4, 5).forAllViaFoldRight(_ < 10) shouldBe true
@@ -61,5 +65,16 @@ class StreamSpec extends FlatSpec with Matchers {
   it should "assert a predicate over its elements" in {
     Stream(1, 2, 3, 4, 5).forAll(_ < 10) shouldBe true
     Stream(1, 2, 3, 4, 5).forAll(_ < 3) shouldBe false
+  }
+
+  // exercise 5.5
+  it should "take the first n elements matching a predicate via foldRight" in {
+    Stream(1, 2, 3, 4, 5).takeWhileViaFoldRight(_ < 4) === Stream(1, 2, 3) shouldBe true
+  }
+
+  // exercise 5.6
+  it should "take return an Option of the first item in the stream via foldRight" in {
+    Stream(1, 2, 3, 4, 5).headOptionViaFoldRight shouldBe Some(1)
+    Stream.empty.headOptionViaFoldRight shouldBe None
   }
 }
