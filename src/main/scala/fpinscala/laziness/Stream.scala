@@ -76,6 +76,15 @@ sealed trait Stream[+A] {
     case Cons(h, t) => t().foldRight(f(h(), z))(f)
     case _ => z
   }
+
+  // exercise 5.4
+  def forAllViaFoldRight(f: A => Boolean): Boolean = foldRight(true)((a, b) => b && f(a))
+
+  def forAll(f: A => Boolean): Boolean = this match {
+    case Cons(h, t) if f(h()) => t().forAll(f)
+    case Cons(h, t) => false
+    case _ => true
+  }
 }
 
 case object Empty extends Stream[Nothing]
