@@ -77,4 +77,19 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(1, 2, 3, 4, 5).headOptionViaFoldRight shouldBe Some(1)
     Stream.empty.headOptionViaFoldRight shouldBe None
   }
+
+  // exercise 5.7
+  it should "map over its elements" in {
+    Stream(1, 2, 3, 4, 5).map(_ * 2) === Stream(2, 4, 6, 8, 10) shouldBe true
+  }
+
+  it should "filter its elements" in {
+    Stream(1, 2, 3, 4, 5).filter(_ % 2 == 1) === Stream(1, 3, 5) shouldBe true
+    Stream.empty[Int].filter(_ % 2 == 1) === Stream.empty shouldBe true
+  }
+
+  it should "append an element" in {
+    Stream(1, 2, 3, 4, 5).append(6) === Stream(1, 2, 3, 4, 5, 6) shouldBe true
+    Stream.empty[Int].append(8) === Stream(8) shouldBe true
+  }
 }

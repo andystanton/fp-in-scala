@@ -101,6 +101,17 @@ sealed trait Stream[+A] {
   // exercise 5.6
   def headOptionViaFoldRight(): Option[A] =
     foldRight(None: Option[A])((a, b) => Some(a).orElse(b))
+
+  // exercise 5.7
+  def map[B](f: A => B): Stream[B] =
+    foldRight(Empty: Stream[B])((a, b) => Stream.cons(f(a), b))
+
+  def filter(f: A => Boolean): Stream[A] =
+    foldRight(Empty: Stream[A])((a, b) =>
+      if (f(a)) Stream.cons(a, b.filter(f)) else b.filter(f))
+
+  def append[B >: A](n: => B): Stream[B] =
+    foldRight(Stream(n))((a, b) => Stream.cons(a, b))
 }
 
 case object Empty extends Stream[Nothing]
