@@ -88,8 +88,12 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream.empty[Int].filter(_ % 2 == 1) === Stream.empty shouldBe true
   }
 
-  it should "append an element" in {
-    Stream(1, 2, 3, 4, 5).append(6) === Stream(1, 2, 3, 4, 5, 6) shouldBe true
-    Stream.empty[Int].append(8) === Stream(8) shouldBe true
+  it should "append another Stream" in {
+    Stream(1, 2, 3, 4, 5).append(Stream(6,7,8,9,10)) === Stream(1, 2, 3, 4, 5, 6,7,8,9,10) shouldBe true
+    Stream.empty[Int].append(Stream(8)) === Stream(8) shouldBe true
+  }
+
+  it should "flatMap over its elements" in {
+    Stream(1, 2, 3, 4, 5).flatMap(i => Stream(i, i)) === Stream(1, 1, 2, 2, 3, 3, 4, 4, 5, 5) shouldBe true
   }
 }
