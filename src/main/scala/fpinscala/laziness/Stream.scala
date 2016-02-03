@@ -137,4 +137,14 @@ object Stream {
   // exercise 5.8
   def constant[A](a: A): Stream[A] =
     Stream.cons(a, constant(a))
+
+  // exercise 5.9
+  def from(a: Int): Stream[Int] =
+    Stream.cons(a, from(a + 1))
+
+  // exercise 5.10
+  def fibs: Stream[Int] = {
+    def fibs(i: Int, j: Int): Stream[Int] = Stream.cons(i, fibs(j, i + j))
+    fibs(0, 1)
+  }
 }

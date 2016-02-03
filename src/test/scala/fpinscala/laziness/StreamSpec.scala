@@ -22,6 +22,10 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(1) === Stream(1) shouldBe true
     Stream(1, 2, 3, 4, 5) === Stream(1, 2, 3, 4, 5) shouldBe true
 
+    // must be same length even with same beginning
+    Stream(1, 2, 3, 4) === Stream(1, 2, 3, 4, 5) shouldBe false
+    Stream(1, 2, 3, 4, 5) === Stream(1, 2, 3, 4) shouldBe false
+
     // same type & not equal
     Stream() === Stream(1) shouldBe false
     Stream() === Stream(1, 2, 3, 4, 5) shouldBe false
@@ -102,7 +106,18 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(1, 2, 3, 4, 5).find(_ == 10) shouldBe None
   }
 
+  // exercise 5.8
   it should "return an infinite stream of a constant" in {
     Stream.constant(1).take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
+  }
+
+  // exercise 5.9
+  it should "generate an infinite of integers" in {
+    Stream.from(4).take(5) === Stream(4, 5, 6, 7, 8) shouldBe true
+  }
+
+  // exercise 5.10
+  it should "generate the Fibonacci sequence" in {
+    Stream.fibs.take(10) === Stream(0, 1, 1, 2, 3, 5, 8, 13, 21, 34) shouldBe true
   }
 }
