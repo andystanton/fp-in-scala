@@ -120,4 +120,9 @@ class StreamSpec extends FlatSpec with Matchers {
   it should "generate the Fibonacci sequence" in {
     Stream.fibs.take(10) === Stream(0, 1, 1, 2, 3, 5, 8, 13, 21, 34) shouldBe true
   }
+
+  // exercise 5.11
+  it should "unfold" in {
+    Stream.unfold(3)(carried => Some((carried, carried + 2))).take(5) === Stream(3, 5, 7, 9, 11) shouldBe true
+  }
 }
