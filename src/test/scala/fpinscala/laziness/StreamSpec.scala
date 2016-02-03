@@ -89,11 +89,20 @@ class StreamSpec extends FlatSpec with Matchers {
   }
 
   it should "append another Stream" in {
-    Stream(1, 2, 3, 4, 5).append(Stream(6,7,8,9,10)) === Stream(1, 2, 3, 4, 5, 6,7,8,9,10) shouldBe true
+    Stream(1, 2, 3, 4, 5).append(Stream(6, 7, 8, 9, 10)) === Stream(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) shouldBe true
     Stream.empty[Int].append(Stream(8)) === Stream(8) shouldBe true
   }
 
   it should "flatMap over its elements" in {
     Stream(1, 2, 3, 4, 5).flatMap(i => Stream(i, i)) === Stream(1, 1, 2, 2, 3, 3, 4, 4, 5, 5) shouldBe true
+  }
+
+  it should "find an element" in {
+    Stream(1, 2, 3, 4, 5).find(_ == 3) shouldBe Some(3)
+    Stream(1, 2, 3, 4, 5).find(_ == 10) shouldBe None
+  }
+
+  it should "return an infinite stream of a constant" in {
+    Stream.constant(1).take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
   }
 }
