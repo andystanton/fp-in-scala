@@ -77,7 +77,7 @@ class StreamSpec extends FlatSpec with Matchers {
   }
 
   // exercise 5.6
-  it should "take return an Option of the first item in the stream via foldRight" in {
+  it should "return an Option of the first item in the stream via foldRight" in {
     Stream(1, 2, 3, 4, 5).headOptionViaFoldRight shouldBe Some(1)
     Stream.empty.headOptionViaFoldRight shouldBe None
   }
@@ -107,7 +107,7 @@ class StreamSpec extends FlatSpec with Matchers {
   }
 
   it should "return an infinite stream of ones" in {
-    Stream.ones.take(5) === Stream(1,1,1,1,1) shouldBe true
+    Stream.ones.take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
   }
 
   // exercise 5.8
@@ -128,30 +128,66 @@ class StreamSpec extends FlatSpec with Matchers {
   // exercise 5.11
   it should "construct Streams in a general way" in {
     Stream.unfold(3)(carried =>
-      Some((carried, carried + 2))
-    ).take(5) === Stream(3, 5, 7, 9, 11) shouldBe true
+      Some((carried, carried + 2))).take(5) === Stream(3, 5, 7, 9, 11) shouldBe true
 
     Stream.unfold(3)(carried =>
-      if (carried > 5) None else Some((carried, carried + 1))
-    ).take(5) === Stream(3, 4, 5) shouldBe true
+      if (carried > 5) None else Some((carried, carried + 1))).take(5) === Stream(3, 4, 5) shouldBe true
   }
 
   // exercise 5.12
   it should "return an infinite stream of ones via unfold" in {
-    Stream.onesViaUnfold.take(5) === Stream(1,1,1,1,1) shouldBe true
+    Stream.onesViaUnfold.take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
   }
 
   it should "return an infinite stream of a constant via unfold" in {
     Stream.constantViaUnfold(1).take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
   }
 
-  // exercise 5.9
   it should "generate an infinite of integers via unfold" in {
     Stream.fromViaUnfold(4).take(5) === Stream(4, 5, 6, 7, 8) shouldBe true
   }
 
-  // exercise 5.10
   it should "generate the Fibonacci sequence via unfold" in {
     Stream.fibsViaUnfold.take(10) === Stream(0, 1, 1, 2, 3, 5, 8, 13, 21, 34) shouldBe true
+  }
+
+  // exercise 5.13
+  it should "map over its elements via unfold" in {
+    Stream(1, 2, 3, 4, 5).mapViaUnfold(_ * 2) === Stream(2, 4, 6, 8, 10) shouldBe true
+  }
+
+  it should "take the first n elements via unfold" in {
+    Stream(1, 2, 3, 4, 5).takeViaUnfold(3) === Stream(1, 2, 3) shouldBe true
+  }
+
+  it should "take the first n elements matching a predicate via unfold" in {
+    Stream(1, 2, 3, 4, 5).takeWhileViaUnfold(_ < 4) === Stream(1, 2, 3) shouldBe true
+  }
+
+  it should "zip two streams together via unfold" in {
+    Stream(1, 2, 3).zipWithViaUnfold(Stream(4, 5, 6))(_ + _) ===
+      Stream(5, 7, 9) shouldBe true
+    Stream(1, 2, 3).zipWithViaUnfold(Stream(4, 5, 6))((_, _)) ===
+      Stream((1, 4), (2, 5), (3, 6)) shouldBe true
+    Stream(1, 2, 3, 4, 5, 6).zipWithViaUnfold(Stream(4, 5, 6))(_ + _) ===
+      Stream(5, 7, 9) shouldBe true
+  }
+
+  it should "zip two streams together until one of them ends" in {
+    Stream(1, 2, 3).zipAll(Stream(4, 5, 6, 7, 8, 9)) === Stream(
+      (Some(1), Some(4)),
+      (Some(2), Some(5)),
+      (Some(3), Some(6)),
+      (None, Some(7)),
+      (None, Some(8)),
+      (None, Some(9))) shouldBe true
+
+    Stream(1, 2, 3, 7, 8, 9).zipAll(Stream(4, 5, 6)) === Stream(
+      (Some(1), Some(4)),
+      (Some(2), Some(5)),
+      (Some(3), Some(6)),
+      (Some(7), None),
+      (Some(8), None),
+      (Some(9), None)) shouldBe true
   }
 }

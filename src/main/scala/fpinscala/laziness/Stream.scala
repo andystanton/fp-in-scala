@@ -65,10 +65,11 @@ sealed trait Stream[+A] {
 
   // exercise 5.3
   def takeWhile(f: A => Boolean): Stream[A] = {
-    def loop(f: A => Boolean, out: Stream[A], as: Stream[A]): Stream[A] = as match {
-      case Cons(h, t) if f(h()) => loop(f, Cons(h, () => out), t())
-      case _ => out
-    }
+    def loop(f: A => Boolean, out: Stream[A], as: Stream[A]): Stream[A] =
+      as match {
+        case Cons(h, t) if f(h()) => loop(f, Cons(h, () => out), t())
+        case _ => out
+      }
     loop(f, Empty, this).reverse
   }
 
@@ -118,6 +119,51 @@ sealed trait Stream[+A] {
 
   def find(p: A => Boolean): Option[A] =
     filter(p).headOption
+
+  // def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A]
+
+  // exericse 5.13
+  def mapViaUnfold[B](f: A => B): Stream[B] = Stream.unfold(this) {
+    case Cons(h, t) => Some((f(h()), t()))
+    case _ => None
+  }
+
+  def takeViaUnfold(n: Int): Stream[A] = Stream.unfold((n, this)) {
+    case (z, as) => as match {
+      case Cons(h, t) if z > 0 => Some((h(), (z - 1, t())))
+      case _ => None
+    }
+  }
+
+  def takeWhileViaUnfold(f: A => Boolean): Stream[A] = Stream.unfold(this) {
+    case Cons(h, t) if f(h()) => Some((h(), t()))
+    case _ => None
+  }
+
+  def zipWithViaUnfold[B, C](bs: Stream[B])(f: (A, B) => C): Stream[C] =
+    Stream.unfold((this, bs)) {
+      case (as, bs) => as match {
+        case Cons(ha, ta) => bs match {
+          case Cons(hb, tb) => Some((f(ha(), hb()), (ta(), tb())))
+          case _ => None
+        }
+        case _ => None
+      }
+    }
+
+  def zipAll[B](bs: Stream[B]): Stream[(Option[A], Option[B])] =
+    Stream.unfold((this, bs)) {
+      case (as, bs) => as match {
+        case Cons(ha, ta) => bs match {
+          case Cons(hb, tb) => Some(((Some(ha()), Some(hb())), (ta(), tb())))
+          case _ => Some(((Some(ha()), None), (ta(), Stream.empty[B])))
+        }
+        case _ => bs match {
+          case Cons(hb, tb) => Some(((None, Some(hb())), (Stream.empty[A], tb())))
+          case _ => None
+        }
+      }
+    }
 }
 
 case object Empty extends Stream[Nothing]
