@@ -106,6 +106,10 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(1, 2, 3, 4, 5).find(_ == 10) shouldBe None
   }
 
+  it should "return an infinite stream of ones" in {
+    Stream.ones.take(5) === Stream(1,1,1,1,1) shouldBe true
+  }
+
   // exercise 5.8
   it should "return an infinite stream of a constant" in {
     Stream.constant(1).take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
@@ -122,7 +126,32 @@ class StreamSpec extends FlatSpec with Matchers {
   }
 
   // exercise 5.11
-  it should "unfold" in {
-    Stream.unfold(3)(carried => Some((carried, carried + 2))).take(5) === Stream(3, 5, 7, 9, 11) shouldBe true
+  it should "construct Streams in a general way" in {
+    Stream.unfold(3)(carried =>
+      Some((carried, carried + 2))
+    ).take(5) === Stream(3, 5, 7, 9, 11) shouldBe true
+
+    Stream.unfold(3)(carried =>
+      if (carried > 5) None else Some((carried, carried + 1))
+    ).take(5) === Stream(3, 4, 5) shouldBe true
+  }
+
+  // exercise 5.12
+  it should "return an infinite stream of ones via unfold" in {
+    Stream.onesViaUnfold.take(5) === Stream(1,1,1,1,1) shouldBe true
+  }
+
+  it should "return an infinite stream of a constant via unfold" in {
+    Stream.constantViaUnfold(1).take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
+  }
+
+  // exercise 5.9
+  it should "generate an infinite of integers via unfold" in {
+    Stream.fromViaUnfold(4).take(5) === Stream(4, 5, 6, 7, 8) shouldBe true
+  }
+
+  // exercise 5.10
+  it should "generate the Fibonacci sequence via unfold" in {
+    Stream.fibsViaUnfold.take(10) === Stream(0, 1, 1, 2, 3, 5, 8, 13, 21, 34) shouldBe true
   }
 }

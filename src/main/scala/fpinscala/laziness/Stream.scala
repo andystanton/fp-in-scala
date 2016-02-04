@@ -134,6 +134,8 @@ object Stream {
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
 
+  def ones: Stream[Int] = Stream.cons(1, ones)
+
   // exercise 5.8
   def constant[A](a: A): Stream[A] =
     Stream.cons(a, constant(a))
@@ -153,4 +155,14 @@ object Stream {
     case Some((a, s)) => Stream.cons(a, unfold(s)(f))
     case _ => Stream.empty
   }
+
+  // exercise 5.12
+  def onesViaUnfold: Stream[Int] = unfold(1)(z => Some((1, z)))
+
+  def constantViaUnfold[A](a: A): Stream[A] = unfold(a)(z => Some((a, z)))
+
+  def fromViaUnfold(a: Int): Stream[Int] = unfold(a)(z => Some((z, z + 1)))
+
+  def fibsViaUnfold: Stream[Int] =
+    unfold((0, 1)) { case (i, j) => Some((i, (j, i + j))) }
 }
