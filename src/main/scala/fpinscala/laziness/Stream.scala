@@ -120,8 +120,6 @@ sealed trait Stream[+A] {
   def find(p: A => Boolean): Option[A] =
     filter(p).headOption
 
-  // def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A]
-
   // exericse 5.13
   def mapViaUnfold[B](f: A => B): Stream[B] = Stream.unfold(this) {
     case Cons(h, t) => Some((f(h()), t()))
