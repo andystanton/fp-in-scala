@@ -32,6 +32,18 @@ class StreamSpec extends FlatSpec with Matchers {
 
     // not same type
     Stream(1) === Stream("1") shouldBe false
+
+    // stream of streams
+    Stream(Stream(1), Stream(2), Stream(3)) ===
+      Stream(Stream(1), Stream(2), Stream(3)) shouldBe true
+    Stream(Stream(1), Stream(2), Stream(3), Stream(4)) ===
+      Stream(Stream(1), Stream(2), Stream(3)) shouldBe false
+    Stream(Stream(1), Stream(2), Stream(3)) ===
+      Stream(Stream(1), Stream(2), Stream(3), Stream(4)) shouldBe false
+
+    Stream(Stream(Stream(1))) === Stream(Stream(Stream(1))) shouldBe true
+    Stream(Stream(Stream(2))) === Stream(Stream(Stream(1))) shouldBe false
+    Stream(Stream(Stream(1))) === Stream(Stream(Stream(2))) shouldBe false
   }
 
   it should "reverse a Stream" in {
@@ -158,6 +170,12 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(1, 2, 3).startsWith(Stream(1, 2, 3, 4, 5, 6)) shouldBe false
     Stream(1, 2, 3).startsWith(Stream(1, 2, 3)) shouldBe true
     Stream.empty.startsWith(Stream.empty) shouldBe true
+  }
+
+  // exercise 5.15
+  it should "return its tails" in {
+    Stream(1, 2, 3).tails ===
+      Stream(Stream(1, 2, 3), Stream(2, 3), Stream(3)) shouldBe true
   }
 
   "A Stream companion object" should "return an infinite stream of ones" in {

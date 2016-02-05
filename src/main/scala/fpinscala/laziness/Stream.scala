@@ -14,7 +14,15 @@ sealed trait Stream[+A] {
   def ===(other: Stream[Any]): Boolean = other match {
     case sameType: Stream[A] => this match {
       case Cons(h, t) => other match {
-        case Cons(oh, ot) => h() == oh() && t() === ot()
+        case Cons(oh, ot) => {
+          h() match {
+            case s: Stream[Any] => oh() match {
+              case os: Stream[Any] => s === os && t() === ot()
+              case _ => false
+            }
+            case s => s == oh() && t() === ot()
+          }
+        }
         case _ => false
       }
       case _ => other == Empty
@@ -163,17 +171,25 @@ sealed trait Stream[+A] {
       }
     }
 
-    // exercise 5.14
-    def startsWith[B >: A](bs: Stream[B]): Boolean = this match {
-      case Cons(ha, ta) => bs match {
-        case Cons(hb, tb) => if (ha() == hb()) ta().startsWith(tb()) else false
-        case _ => true
-      }
-      case _ => bs match {
-        case Cons(hb, ht) => false
-        case _ => true
-      }
+  // exercise 5.14
+  def startsWith[B >: A](bs: Stream[B]): Boolean = this match {
+    case Cons(ha, ta) => bs match {
+      case Cons(hb, tb) => if (ha() == hb()) ta().startsWith(tb()) else false
+      case _ => true
     }
+    case _ => bs match {
+      case Cons(hb, ht) => false
+      case _ => true
+    }
+  }
+
+  //def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A]
+  // exercise 5.15
+  def tails: Stream[Stream[A]] =
+    Stream.unfold(this)(as => as match {
+      case Cons(_, t) => Some((as, t()))
+      case _ => None
+    })
 
 }
 
