@@ -183,14 +183,11 @@ sealed trait Stream[+A] {
     }
   }
 
-  //def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A]
   // exercise 5.15
-  def tails: Stream[Stream[A]] =
-    Stream.unfold(this)(as => as match {
-      case Cons(_, t) => Some((as, t()))
-      case _ => None
-    })
-
+  def tails: Stream[Stream[A]] = Stream.unfold(this)(as => as match {
+    case Cons(_, t) => Some((as, t()))
+    case _ => None
+  })
 }
 
 case object Empty extends Stream[Nothing]
