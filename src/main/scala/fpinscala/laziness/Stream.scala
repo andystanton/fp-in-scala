@@ -162,6 +162,19 @@ sealed trait Stream[+A] {
         }
       }
     }
+
+    // exercise 5.14
+    def startsWith[B >: A](bs: Stream[B]): Boolean = this match {
+      case Cons(ha, ta) => bs match {
+        case Cons(hb, tb) => if (ha() == hb()) ta().startsWith(tb()) else false
+        case _ => true
+      }
+      case _ => bs match {
+        case Cons(hb, ht) => false
+        case _ => true
+      }
+    }
+
 }
 
 case object Empty extends Stream[Nothing]

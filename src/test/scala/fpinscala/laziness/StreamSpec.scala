@@ -151,6 +151,15 @@ class StreamSpec extends FlatSpec with Matchers {
       (Some(9), None)) shouldBe true
   }
 
+  // exercise 5.14
+  it should "indicate if it starts with another stream" in {
+    Stream(1, 2, 3, 4, 5, 6).startsWith(Stream(1, 2, 3, 4)) shouldBe true
+    Stream(1, 2, 3, 4, 5, 6).startsWith(Stream(1, 2, 4)) shouldBe false
+    Stream(1, 2, 3).startsWith(Stream(1, 2, 3, 4, 5, 6)) shouldBe false
+    Stream(1, 2, 3).startsWith(Stream(1, 2, 3)) shouldBe true
+    Stream.empty.startsWith(Stream.empty) shouldBe true
+  }
+
   "A Stream companion object" should "return an infinite stream of ones" in {
     Stream.ones.take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
   }
