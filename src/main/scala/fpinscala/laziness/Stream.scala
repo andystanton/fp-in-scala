@@ -191,8 +191,9 @@ sealed trait Stream[+A] {
   // exercise 5.16
   def scanRight[B](z: B)(f: (A, => B) => B): Stream[B] =
     foldRight((Stream(z), z))((a, b) => {
-      lazy val bval = b
-      (Stream.cons(f(a, bval._2), bval._1), f(a, bval._2))
+      lazy val evaluated = b
+      val scanned = f(a, evaluated._2)
+      (Stream.cons(scanned, evaluated._1), scanned)
     })._1
 }
 
