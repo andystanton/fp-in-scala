@@ -2,7 +2,12 @@ lazy val root = (project in file(".")).
   settings(
     name := "fpinscala",
     version := "1.0.0",
-    scalaVersion := "2.11.7",
+    scalaVersion := "2.11.8",
 
-    libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
+    libraryDependencies ++= Seq(
+      "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
+      "com.lihaoyi" % "ammonite-repl" % "0.5.7" % "test" cross CrossVersion.full
+    ),
+
+    initialCommands in (Test, console) := """ammonite.repl.Main.run("")"""
   )

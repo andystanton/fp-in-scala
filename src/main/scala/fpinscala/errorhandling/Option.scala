@@ -48,7 +48,7 @@ object Option {
     sequence(List.map(a)(f))
 
   def traverseViaRecursion[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a match {
-    case Cons(h, t) => f(h).flatMap(x => (traverseViaRecursion(t)(f)).map(y => Cons(x, y)))
+    case Cons(h, t) => f(h).flatMap(x => traverseViaRecursion(t)(f).map(y => Cons(x, y)))
     case Nil => Some(Nil)
   }
 

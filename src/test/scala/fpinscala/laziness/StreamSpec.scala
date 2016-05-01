@@ -178,6 +178,12 @@ class StreamSpec extends FlatSpec with Matchers {
       Stream(Stream(1, 2, 3), Stream(2, 3), Stream(3)) shouldBe true
   }
 
+  it should "scan right" in {
+    println("foo")
+    println(Stream(1, 2, 3).scanRight(0)(_ + _))
+    Stream(1, 2, 3).scanRight(0)(_ + _) === Stream(6, 5, 3, 0) shouldBe true
+  }
+
   "A Stream companion object" should "return an infinite stream of ones" in {
     Stream.ones.take(5) === Stream(1, 1, 1, 1, 1) shouldBe true
   }
