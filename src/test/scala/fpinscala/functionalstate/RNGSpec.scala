@@ -29,4 +29,37 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
       res._1 should be <= 1.0
     }
   }
+
+  // exercise 6.3
+  "intDouble" should "generate an int/double pair" in {
+    forAll { seed: Long =>
+      val res = SimpleRNG.intDouble(SimpleRNG(seed))._1
+      res._1 should be <= Int.MaxValue
+      res._1 should be >= Int.MinValue
+      res._2 should be >= 0.0
+      res._2 should be <= 1.0
+    }
+  }
+
+  "doubleInt" should "generate a double/int pair" in {
+    forAll { seed: Long =>
+      val res = SimpleRNG.doubleInt(SimpleRNG(seed))._1
+      res._1 should be >= 0.0
+      res._1 should be <= 1.0
+      res._2 should be <= Int.MaxValue
+      res._2 should be >= Int.MinValue
+    }
+  }
+
+  "double3" should "generate a double 3-tuple" in {
+    forAll { seed: Long =>
+      val res = SimpleRNG.double3(SimpleRNG(seed))._1
+      res._1 should be >= 0.0
+      res._1 should be <= 1.0
+      res._2 should be >= 0.0
+      res._2 should be <= 1.0
+      res._3 should be >= 0.0
+      res._3 should be <= 1.0
+    }
+  }
 }
