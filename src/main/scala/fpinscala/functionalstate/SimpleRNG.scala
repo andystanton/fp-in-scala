@@ -15,4 +15,10 @@ object SimpleRNG {
     case (num, nextRNG) if num == Int.MinValue => nonNegativeInt(nextRNG)
     case (num, nextRNG) => (Math.abs(num), nextRNG)
   }
+
+  // exercise 6.2
+  def double(rng: SimpleRNG) = {
+    val nni = nonNegativeInt(rng)
+    (nni._1.toDouble / Int.MaxValue, nni._2)
+  }
 }
