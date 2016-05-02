@@ -5,7 +5,8 @@ lazy val root = (project in file(".")).
     scalaVersion := "2.11.8",
 
     libraryDependencies ++= Seq(
-      "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
+      "org.scalatest" % "scalatest_2.11" % "2.2.6" % "test",
+      "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
       "com.lihaoyi" % "ammonite-repl" % "0.5.7" % "test" cross CrossVersion.full
     ),
 
