@@ -8,3 +8,11 @@ case class SimpleRNG(seed: Long) extends RNG {
     (n, nextRNG)
   }
 }
+
+object SimpleRNG {
+  // exercise 6.1
+  def nonNegativeInt(rng: RNG): (Int, RNG) = rng.nextInt match {
+    case (num, nextRNG) if num == Int.MinValue => nonNegativeInt(nextRNG)
+    case (num, nextRNG) => (Math.abs(num), nextRNG)
+  }
+}
