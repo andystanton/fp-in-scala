@@ -41,4 +41,17 @@ object SimpleRNG {
     val d3 = double(d2._2)
     ((d1._1, d2._1, d3._1), d3._2)
   }
+
+  // exercise 6.4
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    def loop(count: Int, rng: RNG, build: List[Int]): (List[Int], RNG) = {
+      count match {
+        case 0 => (build, rng)
+        case _ =>
+          val i = nonNegativeInt(rng)
+          loop(count - 1, i._2, i._1 :: build)
+      }
+    }
+    loop(count, rng, Nil)
+  }
 }

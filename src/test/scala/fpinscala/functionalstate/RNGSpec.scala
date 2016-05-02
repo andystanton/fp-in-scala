@@ -1,5 +1,6 @@
 package fpinscala.functionalstate
 
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -35,7 +36,7 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
     forAll { seed: Long =>
       val res = SimpleRNG.intDouble(SimpleRNG(seed))._1
       res._1 should be <= Int.MaxValue
-      res._1 should be >= Int.MinValue
+      res._1 should be >= 0
       res._2 should be >= 0.0
       res._2 should be <= 1.0
     }
@@ -47,7 +48,7 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
       res._1 should be >= 0.0
       res._1 should be <= 1.0
       res._2 should be <= Int.MaxValue
-      res._2 should be >= Int.MinValue
+      res._2 should be >= 0
     }
   }
 
@@ -60,6 +61,18 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
       res._2 should be <= 1.0
       res._3 should be >= 0.0
       res._3 should be <= 1.0
+    }
+  }
+
+  // exercise 6.4
+  "ints" should "generate a list of random ints" in {
+    forAll(Gen.chooseNum(Long.MinValue, Long.MaxValue), Gen.posNum[Int]) { (seed: Long, count: Int) =>
+      val res = SimpleRNG.ints(count)(SimpleRNG(seed))
+      res._1.length shouldBe count
+      res._1.foreach(randomInt => {
+        randomInt should be >= 0
+        randomInt should be <= Int.MaxValue
+      })
     }
   }
 }

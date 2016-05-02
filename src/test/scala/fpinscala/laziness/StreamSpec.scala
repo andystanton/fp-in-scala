@@ -180,8 +180,6 @@ class StreamSpec extends FlatSpec with Matchers {
 
   // exercise 5.16
   it should "scan right" in {
-    println("foo")
-    println(Stream(1, 2, 3).scanRight(0)(_ + _))
     Stream(1, 2, 3).scanRight(0)(_ + _) === Stream(6, 5, 3, 0) shouldBe true
   }
 
