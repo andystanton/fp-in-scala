@@ -80,4 +80,11 @@ object RNG {
   def randIntDouble = both(nonNegativeIntViaMap, doubleViaMap)
 
   def randDoubleInt = both(doubleViaMap, nonNegativeIntViaMap)
+
+  // exercise 6.7
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = rng =>
+    fs.foldRight((Nil: List[A], rng))((ra, carried) => {
+      val next = ra(carried._2)
+      (next._1 :: carried._1, next._2)
+    })
 }

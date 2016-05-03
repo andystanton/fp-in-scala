@@ -141,4 +141,19 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
       res._2 should be >= 0
     }
   }
+
+  // exercise 6.7
+  "sequence" should "sequence a list of rands into a rand over a list" in {
+    forAll { seed: Long =>
+      val inList = List(RNG.randIntDouble, RNG.randDoubleInt, RNG.int, RNG.doubleViaMap)
+      val res = RNG.sequence(inList)(SimpleRNG(seed))._1
+
+      res.length shouldBe inList.length
+
+      res(0) shouldBe a[(_, _)]
+      res(1) shouldBe a[(_, _)]
+      res(2) shouldBe a[java.lang.Integer]
+      res(3) shouldBe a[java.lang.Double]
+    }
+  }
 }
