@@ -57,7 +57,7 @@ object RNG {
 
   def doubleViaMap: Rand[Double] = map(int)(i => Math.abs(i.toDouble) / Int.MaxValue)
 
-  def nonNegativeIntViaMap: Rand[Int] = map(int)(_ / Int.MaxValue)
+  def nonNegativeIntViaMap: Rand[Int] = map(int)(Math.abs)
 
   def nonNegativeEvenViaMap: Rand[Int] = map(nonNegativeInt)(i => i - i % 2)
 
@@ -87,4 +87,15 @@ object RNG {
       val next = ra(carried._2)
       (next._1 :: carried._1, next._2)
     })
+
+  // exercise 6.8
+  def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] = rng => {
+    val a: (A, RNG) = f(rng)
+    g(a._1)(a._2)
+  }
+
+  def nonNegativeLessThan(n: Int): Rand[Int] = flatMap(nonNegativeIntViaMap) { i => rng =>
+    val mod = i % n
+    if ((i + n - 1) - mod >= 0) (mod, rng) else nonNegativeLessThan(n)(rng)
+  }
 }

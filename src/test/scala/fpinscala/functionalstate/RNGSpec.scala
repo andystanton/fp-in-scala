@@ -156,4 +156,23 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
       res(3) shouldBe a[java.lang.Double]
     }
   }
+
+  // exercise 6.8
+  "flatMap" should "flatMap" in {
+    forAll { seed: Long =>
+      val res = RNG.flatMap(RNG.int)(a => RNG.doubleViaMap)(SimpleRNG(seed))._1
+      res shouldBe a[java.lang.Double]
+      res should be >= 0.0
+      res should be <= 1.0
+    }
+  }
+
+  "nonNegativeLessThan" should "generate non negative ints less than n" in {
+    forAll { seed: Long =>
+      val res = RNG.nonNegativeLessThan(10)(SimpleRNG(seed))._1
+      println(res)
+      res should be >= 0
+      res should be < 10
+    }
+  }
 }
