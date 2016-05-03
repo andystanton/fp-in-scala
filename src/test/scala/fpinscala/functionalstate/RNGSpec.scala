@@ -1,6 +1,6 @@
 package fpinscala.functionalstate
 
-import org.scalacheck.{Arbitrary, Gen}
+import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -73,6 +73,15 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
         randomInt should be >= 0
         randomInt should be <= Int.MaxValue
       })
+    }
+  }
+
+  // exercise 6.5
+  "doubleViaMap" should "generate double between 0 and 1" in {
+    forAll { seed: Long =>
+      val res = SimpleRNG.doubleViaMap(SimpleRNG(seed))
+      res._1 should be >= 0.0
+      res._1 should be <= 1.0
     }
   }
 }

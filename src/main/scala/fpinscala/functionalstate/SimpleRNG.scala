@@ -1,5 +1,7 @@
 package fpinscala.functionalstate
 
+import fpinscala.functionalstate.RNG.Rand
+
 case class SimpleRNG(seed: Long) extends RNG {
   override def nextInt: (Int, RNG) = {
     val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
@@ -54,4 +56,8 @@ object SimpleRNG {
     }
     loop(count, rng, Nil)
   }
+
+  // exercise 6.5
+  def doubleViaMap: Rand[Double] = rng =>
+    RNG.map(rng.int)(i => Math.abs(i.toDouble) / Int.MaxValue)(rng)
 }
