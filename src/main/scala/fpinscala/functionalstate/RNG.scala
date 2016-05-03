@@ -82,20 +82,23 @@ object RNG {
   def randDoubleInt = both(doubleViaMap, nonNegativeIntViaMap)
 
   // exercise 6.7
-  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = rng =>
-    fs.foldRight((Nil: List[A], rng))((ra, carried) => {
-      val next = ra(carried._2)
-      (next._1 :: carried._1, next._2)
-    })
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =
+    fs.foldRight(unit(Nil: List[A]))((ra, carried) => map2(ra, carried)(_ :: _))
 
   // exercise 6.8
   def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] = rng => {
-    val a: (A, RNG) = f(rng)
-    g(a._1)(a._2)
+    val (a, rng2): (A, RNG) = f(rng)
+    g(a)(rng2)
   }
 
-  def nonNegativeLessThan(n: Int): Rand[Int] = flatMap(nonNegativeIntViaMap) { i => rng =>
+  def nonNegativeLessThan(n: Int): Rand[Int] = flatMap(nonNegativeIntViaMap) { i =>
     val mod = i % n
-    if ((i + n - 1) - mod >= 0) (mod, rng) else nonNegativeLessThan(n)(rng)
+    if ((i + n - 1) - mod >= 0) unit(mod) else nonNegativeLessThan(n)
   }
+
+  // exercise 6.9
+  def mapViaFlatMap[A, B](a: Rand[A])(f: A => B): Rand[B] = flatMap(a)(ia => unit(f(ia)))
+
+  def map2ViaFlatMap[A, B, C](a: Rand[A], b: Rand[B])(f: (A, B) => C): Rand[C] =
+    flatMap(a)(ia => flatMap(b)(ib => unit(f(ia, ib))))
 }
