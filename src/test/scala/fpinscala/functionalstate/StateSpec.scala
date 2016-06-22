@@ -1,22 +1,68 @@
 package fpinscala.functionalstate
 
-import fpinscala.functionalstate.State.Rand.int
+import fpinscala.functionalstate.State.Rand
+import fpinscala.functionalstate.State.Rand.{int, double}
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 
 class StateSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
-  "State unit" should "return the unit value" in {
+  "unit" should "return the unit state" in {
     forAll { seed: Long =>
       val (res, _) = State.unit(3.0).run(SimpleRNG(seed))
       res shouldBe 3.0
     }
   }
 
-  "State map" should "map" in {
+  "map" should "map" in {
     forAll { seed: Long =>
       val (res, _) = int.map(_.toDouble).run(SimpleRNG(seed))
       res should be >= Double.MinValue
       res should be <= Double.MaxValue
+    }
+  }
+
+  "flatMap" should "flatMap" in {
+    forAll { seed: Long =>
+      val (res, _) = int.flatMap(Rand.toDouble).run(SimpleRNG(seed))
+      res shouldBe a[java.lang.Double]
+      res should be >= 0.0
+      res should be <= 1.0
+    }
+  }
+
+  "map2" should "combine two states" in {
+    forAll { seed: Long =>
+      val i1: Rand[Int] = int
+      val i2: Rand[Int] = int
+
+      val rng: SimpleRNG = SimpleRNG(seed)
+      val (res, _) = State.map2(i1, i2)(_ + _).run(rng)
+
+      res should be <= Int.MaxValue
+      res should be >= Int.MinValue
+
+      val i1Computed = i1.run(rng)
+      val i2Computed = i2.run(i1Computed._2)
+
+      res shouldBe i1Computed._1 + i2Computed._1
+    }
+  }
+
+  "sequence" should "sequence a list of states into a state over a list" in {
+    forAll { seed: Long =>
+      val inList = List(State.unit[RNG, Int](3), State.unit[RNG, Double](8435.21), int, double)
+      val (res, _) = State.sequence[RNG, Any](inList).run(SimpleRNG(seed))
+
+      res.length shouldBe inList.length
+
+      val ui :: ud :: i :: d :: Nil = res
+
+      ui shouldBe a[java.lang.Integer]
+      ui shouldBe 3
+      ud shouldBe a[java.lang.Double]
+      ud shouldBe 8435.21
+      i shouldBe a[java.lang.Integer]
+      d shouldBe a[java.lang.Double]
     }
   }
 }
