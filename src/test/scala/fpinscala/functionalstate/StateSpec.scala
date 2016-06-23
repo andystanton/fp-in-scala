@@ -65,4 +65,33 @@ class StateSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyCheck
       d shouldBe a[java.lang.Double]
     }
   }
+
+  "get" should "return the current state" in {
+    forAll { seed: Long =>
+      val rng: SimpleRNG = SimpleRNG(seed)
+      val (r1, r2) = State.unit[RNG, Int](3).get.run(rng)
+      r1 shouldBe rng
+      r1 shouldBe r2
+    }
+  }
+
+  "set" should "update the current state" in {
+    forAll { seed: Long =>
+      val rng: SimpleRNG = SimpleRNG(seed)
+      val rng2: SimpleRNG = SimpleRNG(seed)
+      val (r1, r2) = State.unit[RNG, Int](3).set(rng2).run(rng)
+      r1 shouldBe ()
+      r2 shouldBe rng
+    }
+  }
+
+  "modify" should "modify the current state" in {
+    forAll { seed: Long =>
+      val rng: SimpleRNG = SimpleRNG(seed)
+      val rng2: SimpleRNG = SimpleRNG(seed)
+      val (r1, r2) = State.unit[RNG, Int](3).modify(_ => rng2).run(rng)
+      r1 shouldBe ()
+      r2 shouldBe rng2
+    }
+  }
 }
