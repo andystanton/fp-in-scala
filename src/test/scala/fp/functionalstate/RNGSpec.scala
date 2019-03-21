@@ -1,6 +1,6 @@
-package fpinscala.functionalstate
+package fp.functionalstate
 
-import fpinscala.functionalstate.RNG._
+import fp.functionalstate.RNG._
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}

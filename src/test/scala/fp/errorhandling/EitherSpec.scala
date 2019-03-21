@@ -1,6 +1,6 @@
-package fpinscala.errorhandling
+package fp.errorhandling
 
-import fpinscala.datastructures._
+import fp.datastructures._
 import org.scalatest._
 
 class EitherSpec extends FlatSpec with Matchers {

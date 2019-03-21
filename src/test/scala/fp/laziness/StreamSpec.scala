@@ -1,4 +1,4 @@
-package fpinscala.laziness
+package fp.laziness
 
 import org.scalatest._
 

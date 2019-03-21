@@ -1,4 +1,4 @@
-package fpinscala.parallelism
+package fp.parallelism
 
 case class Par[A]()
 

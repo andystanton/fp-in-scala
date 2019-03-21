@@ -1,4 +1,4 @@
-package fpinscala.functionalstate
+package fp.functionalstate
 
 import org.scalatest.{FlatSpec, Matchers}
 

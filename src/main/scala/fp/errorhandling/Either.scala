@@ -1,6 +1,6 @@
-package fpinscala.errorhandling
+package fp.errorhandling
 
-import fpinscala.datastructures._
+import fp.datastructures._
 
 case class Left[+E](value: E) extends Either[E, Nothing]
 case class Right[+A](value: A) extends Either[Nothing, A]

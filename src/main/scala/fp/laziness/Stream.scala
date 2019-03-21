@@ -1,4 +1,4 @@
-package fpinscala.laziness
+package fp.laziness
 
 sealed trait Stream[+A] {
   def headOption: Option[A] = this match {

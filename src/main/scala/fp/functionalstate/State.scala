@@ -1,4 +1,4 @@
-package fpinscala.functionalstate
+package fp.functionalstate
 
 case class State[S, +A](run: S => (A, S)) {
   def map[B](f: A => B): State[S, B] = State[S, B](stateA => {

@@ -1,4 +1,4 @@
-package fpinscala.errorhandling
+package fp.errorhandling
 
 object Variance {
   // exercise 4.2

@@ -1,4 +1,4 @@
-package fpinscala.datastructures
+package fp.datastructures
 
 import org.scalatest._
 

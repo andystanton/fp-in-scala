@@ -1,4 +1,4 @@
-package fpinscala.functionalstate
+package fp.functionalstate
 
 case class SimpleRNG(seed: Long) extends RNG {
   override def nextInt: (Int, RNG) = {

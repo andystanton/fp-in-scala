@@ -1,7 +1,7 @@
-package fpinscala.functionalstate
+package fp.functionalstate
 
-import fpinscala.functionalstate.State.Rand
-import fpinscala.functionalstate.State.Rand.{int, double}
+import fp.functionalstate.State.Rand
+import fp.functionalstate.State.Rand.{int, double}
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 

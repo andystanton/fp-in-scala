@@ -1,4 +1,4 @@
-package fpinscala.errorhandling
+package fp.errorhandling
 
 import org.scalatest._
 

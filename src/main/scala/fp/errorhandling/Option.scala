@@ -1,6 +1,6 @@
-package fpinscala.errorhandling
+package fp.errorhandling
 
-import fpinscala.datastructures._
+import fp.datastructures._
 
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
