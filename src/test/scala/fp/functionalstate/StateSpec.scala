@@ -80,7 +80,7 @@ class StateSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyCheck
       val rng: SimpleRNG = SimpleRNG(seed)
       val rng2: SimpleRNG = SimpleRNG(seed)
       val (r1, r2) = State.set(rng2).run(rng)
-      r1 shouldBe ()
+      r1 shouldBe (())
       r2 shouldBe rng
     }
   }
@@ -90,7 +90,7 @@ class StateSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyCheck
       val rng: SimpleRNG = SimpleRNG(seed)
       val rng2: SimpleRNG = SimpleRNG(seed)
       val (r1, r2) = State.modify[RNG](_ => rng2).run(rng)
-      r1 shouldBe ()
+      r1 shouldBe (())
       r2 shouldBe rng2
     }
   }
