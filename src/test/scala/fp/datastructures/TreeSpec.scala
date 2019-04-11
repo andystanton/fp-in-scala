@@ -5,9 +5,9 @@ import org.scalatest._
 class TreeSpec extends FlatSpec with Matchers {
   // exercise 3.25
   "A Tree companion object" should "calculate the number of nodes in a tree" in {
-    Tree.size(Leaf(())) shouldBe 1
-    Tree.size(Branch(Leaf(()), Leaf(()))) shouldBe 3
-    Tree.size(Branch(Branch(Leaf(()), Leaf(())), Branch(Leaf(()), Leaf(())))) shouldBe 7
+    Tree.size(Leaf()) shouldBe 1
+    Tree.size(Branch(Leaf(), Leaf())) shouldBe 3
+    Tree.size(Branch(Branch(Leaf(), Leaf()), Branch(Leaf(), Leaf()))) shouldBe 7
   }
 
   // exercise 3.26
@@ -19,9 +19,9 @@ class TreeSpec extends FlatSpec with Matchers {
 
   // exercise 3.27
   it should "find the depth of a tree" in {
-    Tree.depth(Leaf(())) shouldBe 1
-    Tree.depth(Branch(Leaf(()), Leaf(()))) shouldBe 2
-    Tree.depth(Branch(Branch(Leaf(()), Leaf(())), Branch(Branch(Leaf(()), Leaf(())), Leaf(())))) shouldBe 4
+    Tree.depth(Leaf()) shouldBe 1
+    Tree.depth(Branch(Leaf(), Leaf())) shouldBe 2
+    Tree.depth(Branch(Branch(Leaf(), Leaf()), Branch(Branch(Leaf(), Leaf()), Leaf()))) shouldBe 4
   }
 
   // exercise 3.28
@@ -33,9 +33,9 @@ class TreeSpec extends FlatSpec with Matchers {
 
   // exercise 3.29
   it should "calculate the number of nodes in a tree using fold" in {
-    Tree.sizeViaFold(Leaf(())) shouldBe 1
-    Tree.sizeViaFold(Branch(Leaf(()), Leaf(()))) shouldBe 3
-    Tree.sizeViaFold(Branch(Branch(Leaf(()), Leaf(())), Branch(Leaf(()), Leaf(())))) shouldBe 7
+    Tree.sizeViaFold(Leaf()) shouldBe 1
+    Tree.sizeViaFold(Branch(Leaf(), Leaf())) shouldBe 3
+    Tree.sizeViaFold(Branch(Branch(Leaf(), Leaf()), Branch(Leaf(), Leaf()))) shouldBe 7
   }
 
   it should "find the maximum element in a tree of integers using fold" in {
@@ -45,9 +45,9 @@ class TreeSpec extends FlatSpec with Matchers {
   }
 
   it should "find the depth of a tree using fold" in {
-    Tree.depth(Leaf(())) shouldBe 1
-    Tree.depth(Branch(Leaf(()), Leaf(()))) shouldBe 2
-    Tree.depth(Branch(Branch(Leaf(()), Leaf(())), Branch(Branch(Leaf(()), Leaf(())), Leaf(())))) shouldBe 4
+    Tree.depth(Leaf()) shouldBe 1
+    Tree.depth(Branch(Leaf(), Leaf())) shouldBe 2
+    Tree.depth(Branch(Branch(Leaf(), Leaf()), Branch(Branch(Leaf(), Leaf()), Leaf()))) shouldBe 4
   }
 
   it should "convert a tree from one type to another using fold" in {
