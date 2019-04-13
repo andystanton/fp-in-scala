@@ -2,10 +2,10 @@ package fp.functionalstate
 
 import fp.functionalstate.State.Rand
 import fp.functionalstate.State.Rand.{int, double}
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 
-class StateSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
+class StateSpec extends FlatSpec with Matchers with ScalaCheckDrivenPropertyChecks {
   "unit" should "return the unit state" in {
     forAll { seed: Long =>
       val (res, _) = State.unit(3.0).run(SimpleRNG(seed))
@@ -24,7 +24,7 @@ class StateSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyCheck
   "flatMap" should "flatMap" in {
     forAll { seed: Long =>
       val (res, _) = int.flatMap(Rand.toDouble).run(SimpleRNG(seed))
-      res shouldBe a[java.lang.Double]
+      res shouldBe a[Double]
       res should be >= 0.0
       res should be <= 1.0
     }
@@ -57,12 +57,12 @@ class StateSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyCheck
 
       val ui :: ud :: i :: d :: Nil = res
 
-      ui shouldBe a[java.lang.Integer]
+      ui shouldBe an[Int]
       ui shouldBe 3
-      ud shouldBe a[java.lang.Double]
+      ud shouldBe a[Double]
       ud shouldBe 8435.21
-      i shouldBe a[java.lang.Integer]
-      d shouldBe a[java.lang.Double]
+      i shouldBe an[Int]
+      d shouldBe a[Double]
     }
   }
 

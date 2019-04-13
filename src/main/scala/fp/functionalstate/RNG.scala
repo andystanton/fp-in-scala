@@ -14,25 +14,25 @@ object RNG {
   }
 
   // exercise 6.2
-  def double(rng: RNG) = {
+  def double(rng: RNG): (Double, RNG) = {
     val nni = nonNegativeInt(rng)
     (nni._1.toDouble / Int.MaxValue, nni._2)
   }
 
   // exercise 6.3
-  def intDouble(rng: SimpleRNG) = {
+  def intDouble(rng: RNG): ((Int, Double), RNG) = {
     val i = nonNegativeInt(rng)
     val d = double(i._2)
     ((i._1, d._1), d._2)
   }
 
-  def doubleInt(rng: SimpleRNG) = {
+  def doubleInt(rng: RNG): ((Double, Int), RNG) = {
     val d = double(rng)
     val i = nonNegativeInt(d._2)
     ((d._1, i._1), i._2)
   }
 
-  def double3(rng: SimpleRNG) = {
+  def double3(rng: RNG): ((Double, Double, Double), RNG) = {
     val d1 = double(rng)
     val d2 = double(d1._2)
     val d3 = double(d2._2)
@@ -59,7 +59,7 @@ object RNG {
 
   def nonNegativeIntViaMap: Rand[Int] = map(int)(Math.abs)
 
-  def nonNegativeEvenViaMap: Rand[Int] = map(nonNegativeInt)(i => i - i % 2)
+  def nonNegativeEvenViaMap: Rand[Int] = map(nonNegativeIntViaMap)(i => i - i % 2)
 
   def unit[A](a: A): Rand[A] = rng => (a, rng)
 
@@ -77,9 +77,9 @@ object RNG {
 
   def both[A, B](ra: Rand[A], rb: Rand[B]): Rand[(A, B)] = map2(ra, rb)((_, _))
 
-  def randIntDouble = both(nonNegativeIntViaMap, doubleViaMap)
+  def randIntDouble: Rand[(Int, Double)] = both(nonNegativeIntViaMap, doubleViaMap)
 
-  def randDoubleInt = both(doubleViaMap, nonNegativeIntViaMap)
+  def randDoubleInt: Rand[(Double, Int)] = both(doubleViaMap, nonNegativeIntViaMap)
 
   // exercise 6.7
   def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =

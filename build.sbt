@@ -6,8 +6,8 @@ lazy val root = (project in file("."))
     scalacOptions += "-deprecation",
 
     libraryDependencies ++= Seq(
-      "org.scalactic" %% "scalactic" % "3.0.5",
-      "org.scalatest" %% "scalatest" % "3.0.5" % "test",
+      "org.scalactic" %% "scalactic" % "3.0.7",
+      "org.scalatest" %% "scalatest" % "3.0.7" % "test",
       "org.scalacheck" %% "scalacheck" % "1.14.0" % "test",
       "com.lihaoyi" % "ammonite" % "1.6.4" % "test" cross CrossVersion.full
     ),

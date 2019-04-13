@@ -2,10 +2,10 @@ package fp.functionalstate
 
 import fp.functionalstate.RNG._
 import org.scalacheck.Gen
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 
-class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
+class RNGSpec extends FlatSpec with Matchers with ScalaCheckDrivenPropertyChecks {
   "A Random Number Generator" should "generate integers between min and max inclusive" in {
     forAll { seed: Long =>
       val (res, _) = SimpleRNG(seed).nextInt
@@ -158,12 +158,13 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
 
       res.length shouldBe inList.length
 
+
       val id :: di :: i :: d :: Nil = res
 
       id shouldBe a[(_, _)]
       di shouldBe a[(_, _)]
-      i shouldBe a[java.lang.Integer]
-      d shouldBe a[java.lang.Double]
+      i shouldBe an[Int]
+      d shouldBe a[Double]
     }
   }
 
@@ -171,7 +172,7 @@ class RNGSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks 
   "flatMap" should "flatMap" in {
     forAll { seed: Long =>
       val (res, _) = flatMap(int)(a => doubleViaMap)(SimpleRNG(seed))
-      res shouldBe a[java.lang.Double]
+      res shouldBe a[Double]
       res should be >= 0.0
       res should be <= 1.0
     }
