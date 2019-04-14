@@ -75,12 +75,10 @@ class CandyMachineSpec extends FlatSpec with Matchers {
     outMachine.locked shouldBe true
   }
 
-  it should "handle being run with no inputs" in {
-    val machine = Machine(locked = true, candies = 0, coins = 10)
-
-    intercept[IllegalArgumentException] {
-      val machine = Machine(locked = true, candies = 6, coins = 10)
-      Machine.simulateMachine(Nil: List[Input]).run(machine)
-    }.getMessage shouldBe "Cannot simulate machine with no inputs"
-  }
+//  it should "handle being run with no inputs" in {
+//    intercept[IllegalArgumentException] {
+//      val machine = Machine(locked = true, candies = 6, coins = 10)
+//      Machine.simulateMachine(Nil: List[Input]).run(machine)
+//    }.getMessage shouldBe "Cannot simulate machine with no inputs"
+//  }
 }
